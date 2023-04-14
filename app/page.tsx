@@ -1,12 +1,12 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
+import Footer from './components/footer';
+import Header from './components/header';
 
 export default function Home() {
     return (
         <>
-            <button className='btn'>안녕하세요</button>
+            <Header />
+            <div className='h-[720px]'></div>
+            <Footer />
         </>
     );
 }
