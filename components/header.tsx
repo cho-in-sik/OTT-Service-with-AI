@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Header() {
     return (
         <>
@@ -28,19 +30,24 @@ export default function Header() {
                             className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
                         >
                             <li>
-                                <a>Homepage</a>
+                                <Link href='/'>홈</Link>
                             </li>
                             <li>
-                                <a>Portfolio</a>
+                                <Link href='auth/sign-up'>회원가입</Link>
                             </li>
                             <li>
-                                <a>About</a>
+                                <Link href='auth/sign-in'>로그인</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className='navbar-center'>
-                    <a className='btn btn-ghost normal-case text-xl'>daisyUI</a>
+                    <Link
+                        href='/'
+                        className='btn btn-ghost normal-case text-xl'
+                    >
+                        오짬🦑🍜
+                    </Link>
                 </div>
                 <div className='navbar-end'>
                     <button className='btn btn-ghost btn-circle'>
