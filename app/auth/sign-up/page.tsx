@@ -151,7 +151,10 @@ function SignUp() {
                         </p>
                     </div>
                     <div className='flex flex-col justify-between'>
-                        <button type='submit' className='btn w-full'>
+                        <button
+                            type='submit'
+                            className='btn btn-primary w-full'
+                        >
                             가입
                         </button>
                     </div>
