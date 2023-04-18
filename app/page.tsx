@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <>
       <MainCarousel data={data} />
-      <div className="px-24">
+      <div className="">
         <Section classification="Featured Movie" list={list[0]} />
         <Section classification="New Arrival" list={list[1]} />
       </div>

@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+//@ts-ignore
+import Carousel from "react-grid-carousel";
 import Image from "next/image";
 
 interface Props {
@@ -12,12 +14,12 @@ interface Props {
 
 const Section = ({ classification, list }: Props) => {
   return (
-    <div className="my-8">
-      <h2 className="text-4xl font-bold ">{classification}</h2>
-      <div className="carousel carousel-end">
+    <div className="relative my-10 px-36">
+      <h2 className="px-4 text-4xl font-bold">{classification}</h2>
+      <Carousel cols={5} rows={1} gap={10}>
         {list.map(({ id, posterUrl, title }, idx) => (
-          <div className="carousel-item w-80" key={id}>
-            <div className="">
+          <Carousel.Item key={id}>
+            <div>
               <Image
                 className="h-[400px]"
                 src={`http://localhost:3000/${posterUrl}`}
@@ -27,9 +29,9 @@ const Section = ({ classification, list }: Props) => {
               />
               <h3 className="text-xl font-bold">{title}</h3>
             </div>
-          </div>
+          </Carousel.Item>
         ))}
-      </div>
+      </Carousel>
     </div>
   );
 };
