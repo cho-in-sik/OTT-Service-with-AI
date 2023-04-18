@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <>
-      <div className="absolute text-white duration-200 bg-transparent navbar hover:bg-base-100 hover:text-cyan-500">
+      <div className="fixed text-white duration-200 bg-transparent navbar hover:bg-base-100 hover:text-cyan-500">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost btn-circle">

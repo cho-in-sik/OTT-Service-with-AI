@@ -1,7 +1,20 @@
-import Image from "next/image";
+import MainCarousel from "@/components/home/MainCarousel";
+import Section from "@/components/home/Section";
 
-async function getMainMoives() {
-  const res = await fetch("http://localhost:3000/api/movies", {
+async function getMainMoives(): Promise<
+  { posterUrl: string; title: string; id: string; overview: string }[]
+> {
+  const res = await fetch("http://localhost:3000/api/movies/main", {
+    cache: "no-store",
+  });
+  const data = await res.json();
+  return data;
+}
+
+async function getMovieLists(): Promise<
+  { posterUrl: string; title: string; id: string }[][]
+> {
+  const res = await fetch("http://localhost:3000/api/movies/list", {
     cache: "no-store",
   });
   const data = await res.json();
@@ -10,32 +23,15 @@ async function getMainMoives() {
 
 export default async function Home() {
   const data = await getMainMoives();
+  const list = await getMovieLists();
 
   return (
-    <div className="h-[450px] carousel carousel-vertical bg-gradient-to-r from-cyan-500 to-blue-500">
-      {data.map(({ posterUrl, title, id, overview }: any) => {
-        return (
-          <>
-            <div
-              className="justify-around h-full carousel-item w-[80%] ml-auto mr-auto"
-              key={id}
-            >
-              <div className="mt-auto mb-auto text-white">
-                <h1 className="mb-4 text-5xl font-bold">{title}</h1>
-                <p className=" w-96">{overview}</p>
-              </div>
-              {/* TODO: 이미지 클릭시 상세페이지로 이동 */}
-              <Image
-                className=""
-                src={`http://localhost:3000/${posterUrl}`}
-                alt={title}
-                width={300}
-                height={450}
-              />
-            </div>
-          </>
-        );
-      })}
-    </div>
+    <>
+      <MainCarousel data={data} />
+      <div className="px-24">
+        <Section classification="Featured Movie" list={list[0]} />
+        <Section classification="New Arrival" list={list[1]} />
+      </div>
+    </>
   );
 }
