@@ -3,6 +3,15 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-}
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
