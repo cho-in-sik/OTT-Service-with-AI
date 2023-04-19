@@ -16,11 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RecoilRoot>
-          <Header />
-          {children}
-          <Footer />
-        </RecoilRoot>
+        <Header />
+        {children}
+        <Footer />
       </body>
     </html>
   );
