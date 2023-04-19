@@ -6,11 +6,11 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 interface FormValue {
-    email: string;
+    username: string;
     password: string;
     confirmPassword: string;
-    birthDateOrg: string;
-    birthDate: { year: number; month: number; day: number };
+    name: string;
+    email: string;
 }
 
 function SignUp() {
@@ -28,17 +28,13 @@ function SignUp() {
     passwordRef.current = watch('password');
 
     const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
-        const [year, month, day]: number[] = data.birthDateOrg
-            .split('-')
-            .map((e) => Number(e));
+        const result = await axios
+            .post('http://localhost:8080/api/auth/signup', data, {
+                withCredentials: true,
+            })
+            .then((response) => response.data);
 
-        data.birthDate = { year: year, month: month, day: day };
-
-        // const result = await axios
-        //     .post('http://localhost:8080/auth/signup', data)
-        //     .then((response) => response.data);
-
-        // console.log(result);
+        console.log(result);
         alert('회원가입 완료');
         router.push('/');
     };
@@ -49,30 +45,51 @@ function SignUp() {
                 <form onSubmit={handleSubmit(onSubmitHandler)}>
                     <div className='mb-6'>
                         <label
-                            htmlFor='email'
+                            htmlFor='username'
                             className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                         >
                             아이디
                         </label>
                         <input
-                            {...register('email', {
+                            {...register('username', {
                                 required: true,
                                 maxLength: 20,
-                                pattern: /^\S+@\S+$/i,
                             })}
                             type='text'
-                            id='email'
+                            id='username'
                             className='input input-bordered w-full'
-                            placeholder='test@test.com'
                         />
                         <p className='mt-2 text-sm text-red-600 dark:text-red-500'>
                             <span className='font-bold'>
-                                {errors.email?.type === 'required' &&
-                                    '이메일을 입력해주세요!'}
-                                {errors.email?.type === 'maxLength' &&
+                                {errors.username?.type === 'required' &&
+                                    '아이디를 입력해주세요!'}
+                                {errors.username?.type === 'maxLength' &&
                                     '최대 20자만 입력할 수 있습니다!'}
-                                {errors.email?.type === 'pattern' &&
-                                    '이메일 양식이 올바르지 않습니다!'}
+                            </span>
+                        </p>
+                    </div>
+                    <div className='mb-6'>
+                        <label
+                            htmlFor='name'
+                            className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                        >
+                            이름
+                        </label>
+                        <input
+                            {...register('name', {
+                                required: true,
+                                maxLength: 6,
+                            })}
+                            type='text'
+                            id='name'
+                            className='input input-bordered w-full'
+                        />
+                        <p className='mt-2 text-sm text-red-600 dark:text-red-500'>
+                            <span className='font-bold'>
+                                {errors.name?.type === 'required' &&
+                                    '이름을 입력해주세요!'}
+                                {errors.name?.type === 'maxLength' &&
+                                    '최대 6자만 입력할 수 있습니다!'}
                             </span>
                         </p>
                     </div>
@@ -129,6 +146,35 @@ function SignUp() {
                     </div>
                     <div className='mb-6'>
                         <label
+                            htmlFor='email'
+                            className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                        >
+                            이메일
+                        </label>
+                        <input
+                            {...register('email', {
+                                required: true,
+                                maxLength: 20,
+                                pattern: /^\S+@\S+$/i,
+                            })}
+                            type='text'
+                            id='email'
+                            className='input input-bordered w-full'
+                            placeholder='test@test.com'
+                        />
+                        <p className='mt-2 text-sm text-red-600 dark:text-red-500'>
+                            <span className='font-bold'>
+                                {errors.email?.type === 'required' &&
+                                    '이메일을 입력해주세요!'}
+                                {errors.email?.type === 'maxLength' &&
+                                    '최대 20자만 입력할 수 있습니다!'}
+                                {errors.email?.type === 'pattern' &&
+                                    '이메일 양식이 올바르지 않습니다!'}
+                            </span>
+                        </p>
+                    </div>
+                    {/* <div className='mb-6'>
+                        <label
                             htmlFor='birthDateOrg'
                             className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                         >
@@ -149,9 +195,12 @@ function SignUp() {
                                     '생년월일을 입력해주세요!'}
                             </span>
                         </p>
-                    </div>
+                    </div> */}
                     <div className='flex flex-col justify-between'>
-                        <button type='submit' className='btn w-full'>
+                        <button
+                            type='submit'
+                            className='btn btn-primary w-full'
+                        >
                             가입
                         </button>
                     </div>
