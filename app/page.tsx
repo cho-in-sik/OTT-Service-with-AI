@@ -1,11 +1,11 @@
-import MainCarousel from "@/components/home/MainCarousel";
-import Section from "@/components/home/Section";
+import MainCarousel from '@/components/home/MainCarousel';
+import Section from '@/components/home/Section';
 
 async function getMainMoives(): Promise<
   { posterUrl: string; title: string; id: string; overview: string }[]
 > {
-  const res = await fetch("http://localhost:3000/api/movies/main", {
-    cache: "no-store",
+  const res = await fetch('http://localhost:3000/api/movies/main', {
+    cache: 'no-store',
   });
   const data = await res.json();
   return data;
@@ -14,8 +14,8 @@ async function getMainMoives(): Promise<
 async function getMovieLists(): Promise<
   { posterUrl: string; title: string; id: string }[][]
 > {
-  const res = await fetch("http://localhost:3000/api/movies/list", {
-    cache: "no-store",
+  const res = await fetch('http://localhost:3000/api/movies/list', {
+    cache: 'no-store',
   });
   const data = await res.json();
   return data;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 //@ts-ignore
-import Carousel from "react-grid-carousel";
-import Image from "next/image";
+import Carousel from 'react-grid-carousel';
+import Image from 'next/image';
 
 interface Props {
   classification: string;

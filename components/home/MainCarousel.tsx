@@ -1,8 +1,8 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
 //@ts-ignore
-import Carousel from "react-grid-carousel";
+import Carousel from 'react-grid-carousel';
 interface Data {
   id: string;
   title: string;
