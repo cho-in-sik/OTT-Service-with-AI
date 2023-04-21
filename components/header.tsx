@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import { api } from '@/util/customAxios';
+import { cookies } from 'next/headers';
+import LogoutBtn from './auth/LogoutBtn';
 
 export default function Header() {
+  const token = cookies().get('ACCESS_TOKEN');
+
   return (
     <>
       <div className="fixed z-[11] text-white duration-200 bg-transparent navbar hover:bg-base-100 hover:text-cyan-500">
@@ -29,12 +34,6 @@ export default function Header() {
               <li>
                 <Link href="/">홈</Link>
               </li>
-              <li>
-                <Link href="auth/sign-up">회원가입</Link>
-              </li>
-              <li>
-                <Link href="auth/sign-in">로그인</Link>
-              </li>
             </ul>
           </div>
         </div>
@@ -60,25 +59,52 @@ export default function Header() {
               />
             </svg>
           </button>
-          <button className="btn btn-ghost btn-circle">
-            <div className="indicator">
+          <div className="dropdown dropdown-end">
+            <label tabIndex={1} className="btn btn-ghost btn-circle">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
                 fill="none"
                 viewBox="0 0 24 24"
+                strokeWidth={1.5}
                 stroke="currentColor"
+                className="w-6 h-6"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
                 />
               </svg>
-              <span className="badge badge-xs badge-primary indicator-item"></span>
-            </div>
-          </button>
+            </label>
+            <ul
+              tabIndex={1}
+              className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+            >
+              {token && (
+                <>
+                  <li>
+                    <Link href="#">회원 정보 수정</Link>
+                  </li>
+                  <li>
+                    <Link href="#">내가 쓴 리뷰</Link>
+                  </li>{' '}
+                  <li>
+                    <LogoutBtn />
+                  </li>
+                </>
+              )}
+              {!token && (
+                <>
+                  <li>
+                    <Link href="auth/sign-up">회원가입</Link>
+                  </li>
+                  <li>
+                    <Link href="auth/sign-in">로그인</Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import GoogleLoginButton from '@/components/auth/GoogleLoginButton';
-import axios from 'axios';
+import { api } from '@/util/customAxios';
 interface FormValue {
   email: string;
   password: string;
@@ -20,9 +20,7 @@ function SignIn() {
   const router = useRouter();
 
   const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
-    console.log(data);
-
-    alert('로그인 완료~~~~~~~~~~~~~~~~');
+    await api.post('/api/auth/login', data);
     router.push('/');
   };
 
@@ -78,19 +76,19 @@ function SignIn() {
             <button type="submit" className="btn btn-primary w-full">
               로그인
             </button>
-            {/* <button
+            <button
               type="button"
               className="btn btn-primary w-full"
               onClick={async () => {
-                const result = await axios.get(
-                  'http://29d6-175-213-100-223.ngrok.io/api/auth/login/google',
+                const result = await api.get(
+                  'http://localhost:8080/api/auth/login/google',
                 );
                 console.log(result);
               }}
             >
               구글 로그인
-            </button> */}
-            <GoogleLoginButton />
+            </button>
+            {/* <GoogleLoginButton /> */}
             <Link href="auth/sign-up">
               <button type="button" className="mt-3 btn w-full">
                 회원가입
