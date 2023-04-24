@@ -43,7 +43,9 @@ export default function Header() {
             오짬🦑🍜
           </Link>
         </div>
+
         <div className="navbar-end">
+          <Link href="mypage">마이페이지</Link>
           <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"

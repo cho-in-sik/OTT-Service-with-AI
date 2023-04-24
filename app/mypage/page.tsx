@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import WidthDrawModal from './withdrawModal';
 
 interface IFormData {
   password: string;
@@ -19,14 +20,15 @@ export default function MyPage() {
     setError,
   } = useForm<IFormData>();
 
-  useEffect(() => {
-    async function getUser() {
-      const res = await axios.get('http://localhost:3000/api/users/me', {
-        withCredentials: true,
-      });
-    }
-    getUser();
-  }, []);
+  //회원정보 get으로 불러오기
+  // useEffect(() => {
+  //   async function getUser() {
+  //     const res = await axios.get('http://localhost:3000/api/users/me', {
+  //       withCredentials: true,
+  //     });
+  //   }
+  //   getUser();
+  // }, []);
 
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
@@ -57,7 +59,7 @@ export default function MyPage() {
       <form onSubmit={handleSubmit(onValid)}>
         <div className="mb-4">
           <label className="block font-bold mb-2">이메일</label>
-          <span className="font-bold">imsif@naver.com</span>
+          <span>imsif@naver.com</span>
         </div>
 
         <div className="mb-4">
@@ -143,6 +145,14 @@ export default function MyPage() {
             저장
           </button>
         </form>
+      </div>
+      <div className="divider"></div>
+      <div>
+        <div className="block font-bold mb-2 text-red-500 dark:text-red-500">
+          회원탈퇴
+        </div>
+        {/* 회원탈퇴 모달창 */}
+        <WidthDrawModal />
       </div>
     </div>
   );
