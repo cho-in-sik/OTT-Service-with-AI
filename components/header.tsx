@@ -1,10 +1,15 @@
 import Link from 'next/link';
 import { api } from '@/util/customAxios';
 import { cookies } from 'next/headers';
-import LogoutBtn from './auth/LogoutBtn';
+import { LoginBtn, LogoutBtn } from './auth/SignBtn';
+import { getServerSession } from 'next-auth';
+import prisma from '@/lib/prisma';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
-export default function Header() {
-  const token = cookies().get('ACCESS_TOKEN');
+export default async function Header() {
+  const session = await getServerSession(authOptions as any);
+
+  console.log(session);
 
   return (
     <>
@@ -80,7 +85,7 @@ export default function Header() {
               tabIndex={1}
               className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
             >
-              {token && (
+              {!!session && (
                 <>
                   <li>
                     <Link href="#">회원 정보 수정</Link>
@@ -93,13 +98,13 @@ export default function Header() {
                   </li>
                 </>
               )}
-              {!token && (
+              {!session && (
                 <>
                   <li>
                     <Link href="auth/sign-up">회원가입</Link>
                   </li>
                   <li>
-                    <Link href="auth/sign-in">로그인</Link>
+                    <LoginBtn />
                   </li>
                 </>
               )}

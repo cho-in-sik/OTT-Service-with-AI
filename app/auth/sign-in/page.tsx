@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import GoogleLoginButton from '@/components/auth/GoogleLoginButton';
 import { api } from '@/util/customAxios';
 interface FormValue {
   email: string;
@@ -76,19 +75,6 @@ function SignIn() {
             <button type="submit" className="btn btn-primary w-full">
               로그인
             </button>
-            <button
-              type="button"
-              className="btn btn-primary w-full"
-              onClick={async () => {
-                const result = await api.get(
-                  'http://localhost:8080/api/auth/login/google',
-                );
-                console.log(result);
-              }}
-            >
-              구글 로그인
-            </button>
-            {/* <GoogleLoginButton /> */}
             <Link href="auth/sign-up">
               <button type="button" className="mt-3 btn w-full">
                 회원가입
