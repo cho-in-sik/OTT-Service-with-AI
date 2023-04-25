@@ -31,7 +31,7 @@ export const authOptions = {
         }
         const pwcheck = await bcrypt.compare(
           credentials!.password,
-          user.password,
+          user.password!,
         );
         if (!pwcheck) {
           console.log('비번틀림');
@@ -66,6 +66,7 @@ export const authOptions = {
     jwt: async ({ token, user }: { token: any; user: any }) => {
       if (user) {
         token.user = {};
+        token.user.id = user.id;
         token.user.name = user.name;
         token.user.email = user.email;
       }
