@@ -48,6 +48,22 @@ export default async function Header() {
           </Link>
         </div>
         <div className="navbar-end">
+          <div className="dropdown ">
+            <label tabIndex={0} className="m-1">
+              마이페이지
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <Link href="mypage/myinfo">마이페이지</Link>
+              </li>
+              <li>
+                <Link href="mypage/mymovie">My Movies</Link>
+              </li>
+            </ul>
+          </div>
           <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"

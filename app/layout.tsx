@@ -1,6 +1,6 @@
-import { RecoilRoot } from 'recoil';
 import Footer from '../components/footer';
 import Header from '../components/header';
+import ReactQueryProvider from './ReactQueryProvider';
 import './globals.css';
 
 export const metadata = {
@@ -16,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <ReactQueryProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );
