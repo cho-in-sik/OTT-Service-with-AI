@@ -15,7 +15,8 @@ interface IFormData {
 
 async function getUser() {
   const res = await axios
-    .get('http://localhost:8000/api/users/me', {
+    // .get('http://localhost:8000/api/users/me', {
+    .get('/api/auth/session', {
       withCredentials: true,
     })
     .then((res) => res.data);
@@ -65,7 +66,8 @@ export default function MyPage() {
       <form onSubmit={handleSubmit(onValid)}>
         <div className="mb-4">
           <label className="block font-bold mb-2">이메일</label>
-          <span>imsif@naver.com</span>
+          <span>{data?.user?.email}</span>
+          {/* <span>imsif@naver.com</span> */}
         </div>
 
         <div className="mb-4">
@@ -122,7 +124,8 @@ export default function MyPage() {
               },
             })}
             type="text"
-            className="input input-bordered "
+            className="input input-bordered"
+            defaultValue={data?.user?.name}
           />
         </div>
         <span className=" text-sm text-red-600 dark:text-red-500">
