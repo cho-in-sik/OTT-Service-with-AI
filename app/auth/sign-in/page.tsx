@@ -34,10 +34,17 @@ function SignIn() {
     }
   };
 
+  const error = window.location.search.includes('OAuthAccountNotLinked');
+
   return (
-    <>
-      <div className="px-14 py-10 w-4/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
+    <div className="flex">
+      <div className="px-14 py-10 w-4/12 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <p className="mb-3 text-sm text-red-600 dark:text-red-500">
+            <span className="font-bold">
+              {error && '이메일 아이디로 가입된 회원입니다.'}
+            </span>
+          </p>
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -104,7 +111,7 @@ function SignIn() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
