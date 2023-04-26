@@ -2,8 +2,8 @@
 
 import React, { useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { api } from '@/util/customAxios';
 
 interface FormValue {
   password: string;
@@ -27,7 +27,7 @@ function SignUp() {
   passwordRef.current = watch('password');
 
   const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
-    const result = await axios
+    const result = await api
       .post('http://localhost:8080/api/auth/signup', data, {
         withCredentials: true,
       })

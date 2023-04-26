@@ -1,7 +1,11 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from './[...nextauth]';
+import parseCookies from '@/util/parseCookies';
 
 export default async function handler(req: any, res: any) {
+  const cookies = parseCookies(req.headers.cookie);
+  console.log(cookies);
+
   const session = await getServerSession(req, res, authOptions as any);
 
   if (req.method === 'GET') {

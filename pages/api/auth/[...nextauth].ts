@@ -23,14 +23,11 @@ export const authOptions = {
       //직접 DB에서 아이디,비번 비교하고
       //아이디,비번 맞으면 return 결과, 틀리면 return null 해야함
       async authorize(credentials) {
-        console.log(credentials);
         const user = await prisma.user.findUnique({
           where: { email: credentials?.email },
         });
 
         if (!user) {
-          //   console.log('해당 이메일은 없음');
-          //   return null;
           throw new Error('아이디 혹은 비밀번호가 틀립니다.');
         }
         const pwcheck = await bcrypt.compare(
@@ -38,12 +35,11 @@ export const authOptions = {
           user.password!,
         );
         if (!pwcheck) {
-          //   console.log('비번틀림');
-          //   return null;
           throw new Error('아이디 혹은 비밀번호가 틀립니다.');
         }
-        // return user as any;
-        return { ...credentials, name: user.name } as any;
+
+        console.log(user);
+        return user as any;
       },
     }),
     // GoogleProvider({
@@ -85,7 +81,7 @@ export const authOptions = {
         where: { userId: token.user.id, provider: 'kakao' },
       });
 
-      if (kakao.expires_at! * 1000 < Date.now()) {
+      if (kakao?.expires_at! * 1000 < Date.now()) {
         try {
           const response = await fetch('https://kauth.kakao.com/oauth/token', {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
