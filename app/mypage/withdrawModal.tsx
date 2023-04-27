@@ -1,19 +1,8 @@
 'use client';
 
-import { api } from '@/util/customAxios';
-import axios from 'axios';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-
-async function withdrawUser(password: string) {
-  await api.delete(
-    '/api/users/me',
-
-    {
-      data: { password },
-    },
-  );
-}
+import { withdrawUser } from '@/utils/api/mypage/withdrawUser';
 
 function WidthDrawModal() {
   const [password, setPassword] = useState('');

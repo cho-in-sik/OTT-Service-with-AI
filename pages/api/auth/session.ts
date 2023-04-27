@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from './[...nextauth]';
-import parseCookies from '@/util/parseCookies';
+import parseCookies from '@/utils/parseCookies';
 
 export default async function handler(req: any, res: any) {
   const cookies = parseCookies(req.headers.cookie);

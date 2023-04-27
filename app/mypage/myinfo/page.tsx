@@ -1,27 +1,17 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/util/customAxios';
+import { api } from '@/utils/api/customAxios';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { getUser } from '@/utils/api/mypage/getUser';
 import WidthDrawModal from '../withdrawModal';
+import Loading from '@/app/loading';
 
 interface IFormData {
   password: string;
   password1: string;
   username: string;
-}
-
-async function getUser() {
-  const res = await axios
-    // .get('http://localhost:8000/api/users/me', {
-    .get('/api/auth/session', {
-      withCredentials: true,
-    })
-    .then((res) => res.data);
-
-  return res;
 }
 
 export default function MyPage() {
@@ -31,15 +21,17 @@ export default function MyPage() {
     formState: { errors },
     setError,
   } = useForm<IFormData>();
+  //next 에서의 react-router-dom의 기능
+  const router = useRouter();
 
   const { data, isLoading, isError } = useQuery(['userInfo'], getUser, {
     onSuccess: () => {
       console.log('성공');
     },
   });
-  console.log(data);
-  //next 에서의 react-router-dom의 기능
-  const router = useRouter();
+  if (isLoading) {
+    return <Loading />;
+  }
 
   //수정
   const onValid = async (data: IFormData) => {
@@ -53,7 +45,10 @@ export default function MyPage() {
     }
     const {
       data: { res },
-    } = await axios.patch('/api/users/me', data);
+    } = await api.patch('/api/users/me', {
+      name: data.username,
+      password: data.password,
+    });
 
     alert('수정완료');
     router.push('/');
@@ -66,7 +61,6 @@ export default function MyPage() {
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
             <span>{data?.user?.email}</span>
-            {/* <span>imsif@naver.com</span> */}
           </div>
 
           <div className="mb-4">
