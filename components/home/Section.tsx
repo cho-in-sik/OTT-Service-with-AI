@@ -2,14 +2,11 @@
 //@ts-ignore
 import Carousel from 'react-grid-carousel';
 import Image from 'next/image';
+import { Movie } from '@/types/movie';
 
 interface Props {
   classification: string;
-  list: {
-    id: string;
-    title: string;
-    posterUrl: string;
-  }[];
+  list: Movie[];
 }
 
 const Section = ({ classification, list }: Props) => {
@@ -22,7 +19,7 @@ const Section = ({ classification, list }: Props) => {
             <div>
               <Image
                 className="h-[400px]"
-                src={`http://localhost:3000/${posterUrl}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}/${posterUrl}`}
                 alt={title}
                 width={300}
                 height={400}
