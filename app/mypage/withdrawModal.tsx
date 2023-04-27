@@ -1,29 +1,24 @@
 'use client';
 
+import { api } from '@/util/customAxios';
 import axios from 'axios';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
-async function withdrawUser(password: any) {
-  const res = await axios.delete(
-    'http://localhost:8000/api/users/me',
+async function withdrawUser(password: string) {
+  await api.delete(
+    '/api/users/me',
 
     {
       data: { password },
-      withCredentials: true,
     },
   );
-
-  return res;
-}
-interface IPassword {
-  password: string;
 }
 
 function WidthDrawModal() {
-  const [password, setPassword] = useState<IPassword>();
+  const [password, setPassword] = useState('');
   //탈퇴
-  const { mutate } = useMutation(() => withdrawUser(password), {
+  const { mutate } = useMutation(withdrawUser, {
     onSuccess: () => {
       alert('탈퇴완료');
     },
@@ -51,12 +46,13 @@ function WidthDrawModal() {
           <form>
             <span className="font-bold mr-4">password:</span>
             <input
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Type here"
               className="input w-3/6 max-w-xs mr-8"
             />
             <button
-              onClick={() => mutate()}
+              onClick={() => mutate(password)}
               type="submit"
               className="btn btn-outline btn-error"
             >

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-
+import { api } from '@/util/customAxios';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -14,12 +14,8 @@ interface IFormData {
 }
 
 async function getUser() {
-  const res = await axios
-    .get('http://localhost:8000/api/users/me', {
-      withCredentials: true,
-    })
-    .then((res) => res.data);
-
+  const res = await api.get('/api/users/me').then((res) => res.data);
+  console.log(res);
   return res;
 }
 
@@ -36,7 +32,7 @@ export default function MyPage() {
       console.log('성공');
     },
   });
-
+  console.log(data);
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
 
@@ -52,9 +48,7 @@ export default function MyPage() {
     }
     const {
       data: { res },
-    } = await axios.patch('http://localhost:8000/api/users/me', data, {
-      withCredentials: true,
-    });
+    } = await axios.patch('/api/users/me', data);
 
     alert('수정완료');
     router.push('/');
