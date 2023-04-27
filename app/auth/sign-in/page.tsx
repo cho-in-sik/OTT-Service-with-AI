@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { api } from '@/util/customAxios';
+import { signIn } from 'next-auth/react';
 interface FormValue {
   email: string;
   password: string;
@@ -18,15 +18,33 @@ function SignIn() {
 
   const router = useRouter();
 
-  const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
-    await api.post('/api/auth/login', data);
-    router.push('/');
+  const onSubmitHandler: SubmitHandler<FormValue> = async (formData) => {
+    // await api.post('/api/auth/login', data);
+
+    const result = await signIn('email-password-credential', {
+      ...formData,
+      redirect: false,
+    });
+
+    if (result?.status === 200) {
+      router.push('/');
+      router.refresh();
+    } else {
+      alert(result?.error);
+    }
   };
 
+  const error = window.location.search.includes('OAuthAccountNotLinked');
+
   return (
-    <>
-      <div className="px-14 py-10 w-4/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
+    <div className="flex">
+      <div className="px-14 py-10 w-4/12 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <p className="mb-3 text-sm text-red-600 dark:text-red-500">
+            <span className="font-bold">
+              {error && '이메일 아이디로 가입된 회원입니다.'}
+            </span>
+          </p>
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -72,8 +90,18 @@ function SignIn() {
             </p>
           </div>
           <div className="flex flex-col justify-between">
+            {/* <button type="submit" className="btn btn-primary w-full">
+              로그인
+            </button> */}
             <button type="submit" className="btn btn-primary w-full">
               로그인
+            </button>
+            <button
+              onClick={() => signIn('kakao')}
+              type="button"
+              className="mt-3 btn btn-warning w-full"
+            >
+              카카오 로그인
             </button>
             <Link href="auth/sign-up">
               <button type="button" className="mt-3 btn w-full">
@@ -83,7 +111,7 @@ function SignIn() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

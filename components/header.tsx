@@ -1,15 +1,10 @@
 import Link from 'next/link';
-import { api } from '@/util/customAxios';
-import { cookies } from 'next/headers';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
 import { getServerSession } from 'next-auth';
-import prisma from '@/lib/prisma';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 export default async function Header() {
   const session = await getServerSession(authOptions as any);
-
-  console.log(session);
 
   return (
     <>

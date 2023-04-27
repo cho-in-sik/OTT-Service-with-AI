@@ -2,8 +2,8 @@
 
 import React, { useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { api } from '@/util/customAxios';
 
 interface FormValue {
   password: string;
@@ -27,7 +27,7 @@ function SignUp() {
   passwordRef.current = watch('password');
 
   const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
-    const result = await axios
+    const result = await api
       .post('http://localhost:8080/api/auth/signup', data, {
         withCredentials: true,
       })
@@ -39,8 +39,8 @@ function SignUp() {
   };
 
   return (
-    <>
-      <div className="px-14 py-10 w-4/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
+    <div className="flex">
+      <div className="px-14 py-10 w-4/12 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="mb-6">
             <label
@@ -152,7 +152,7 @@ function SignUp() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
