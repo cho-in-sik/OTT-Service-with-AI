@@ -1,12 +1,9 @@
 import { api } from '../customAxios';
-import axios from 'axios';
 
 export async function getUser() {
-  const res = await axios
+  const res = await api
     // .get('http://localhost:8000/api/users/me', {
-    .get('/api/auth/session', {
-      withCredentials: true,
-    })
+    .get('/api/users/me')
     .then((res) => res.data);
 
   return res;

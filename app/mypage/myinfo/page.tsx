@@ -43,12 +43,12 @@ export default function MyPage() {
         { shouldFocus: true },
       );
     }
-    const {
-      data: { res },
-    } = await api.patch('/api/users/me', {
+
+    const res = await api.patch('/api/users/me', {
       name: data.username,
       password: data.password,
     });
+    console.log(res);
 
     alert('수정완료');
     router.push('/');
@@ -60,8 +60,32 @@ export default function MyPage() {
         <form onSubmit={handleSubmit(onValid)}>
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
-            <span>{data?.user?.email}</span>
+            <span>{data?.email}</span>
           </div>
+
+          <div className="mb-4">
+            <label className="block font-bold mb-2">이름</label>
+            <input
+              {...register('username', {
+                required: 'Username is required!',
+                maxLength: {
+                  value: 6,
+                  message: '너무 길어요',
+                },
+              })}
+              type="text"
+              className="input input-bordered"
+              defaultValue={data?.name}
+            />
+          </div>
+          <span className=" text-sm text-red-600 dark:text-red-500">
+            {errors.username?.message}
+          </span>
+          <button type="submit" className="mt-4 block btn btn-primary">
+            저장
+          </button>
+
+          <div className="divider"></div>
 
           <div className="mb-4">
             <label className="block font-bold mb-2">비밀번호</label>
@@ -105,24 +129,6 @@ export default function MyPage() {
           </div>
           <span className=" text-sm text-red-600 dark:text-red-500">
             {errors.password1?.message}
-          </span>
-          <div className="mb-4">
-            <label className="block font-bold mb-2">이름</label>
-            <input
-              {...register('username', {
-                required: 'Username is required!',
-                maxLength: {
-                  value: 6,
-                  message: '너무 길어요',
-                },
-              })}
-              type="text"
-              className="input input-bordered"
-              defaultValue={data?.user?.name}
-            />
-          </div>
-          <span className=" text-sm text-red-600 dark:text-red-500">
-            {errors.username?.message}
           </span>
 
           {/* <div className="mb-4">
