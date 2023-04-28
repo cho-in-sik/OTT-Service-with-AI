@@ -1,16 +1,17 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { api } from '@/utils/api/customAxios';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { getUser } from '@/utils/api/mypage/getUser';
 import WidthDrawModal from '../withdrawModal';
 import Loading from '@/app/loading';
+import PatchPassword from '../patchPassword';
+import PostImage from '../postImage';
 
 interface IFormData {
-  password: string;
-  password1: string;
   username: string;
 }
 
@@ -25,10 +26,12 @@ export default function MyPage() {
   const router = useRouter();
 
   const { data, isLoading, isError } = useQuery(['userInfo'], getUser, {
+    cacheTime: 1000,
     onSuccess: () => {
       console.log('성공');
     },
   });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -36,18 +39,10 @@ export default function MyPage() {
   //수정
   const onValid = async (data: IFormData) => {
     //비밀번호, 비밀번호 확인이 같은지 체크
-    if (data.password !== data.password1) {
-      setError(
-        'password1',
-        { message: 'Password are not the same' },
-        { shouldFocus: true },
-      );
-    }
-    const {
-      data: { res },
-    } = await api.patch('/api/users/me', {
+
+    await api.patch('/api/users/me/name', {
       name: data.username,
-      password: data.password,
+      // password: data.password,
     });
 
     alert('수정완료');
@@ -60,52 +55,9 @@ export default function MyPage() {
         <form onSubmit={handleSubmit(onValid)}>
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
-            <span>{data?.user?.email}</span>
+            <span>{data?.email}</span>
           </div>
 
-          <div className="mb-4">
-            <label className="block font-bold mb-2">비밀번호</label>
-            <input
-              {...register('password', {
-                required: 'Password is required!',
-                minLength: {
-                  value: 8,
-                  message: 'Password is Toooooo short!!!!!',
-                },
-                maxLength: {
-                  value: 20,
-                  message: 'Password is Toooooo long!!!!!',
-                },
-              })}
-              type="password"
-              className="input input-bordered "
-            />
-          </div>
-          <span className=" text-sm text-red-600 dark:text-red-500">
-            {errors.password?.message}
-          </span>
-
-          <div className="mb-4">
-            <label className="block font-bold mb-2">비밀번호 확인</label>
-            <input
-              {...register('password1', {
-                required: 'Password1 is required!',
-                minLength: {
-                  value: 8,
-                  message: 'Password is Toooooo short!!!!!',
-                },
-                maxLength: {
-                  value: 20,
-                  message: 'Password is Toooooo long!!!!!',
-                },
-              })}
-              type="password"
-              className="input input-bordered "
-            />
-          </div>
-          <span className=" text-sm text-red-600 dark:text-red-500">
-            {errors.password1?.message}
-          </span>
           <div className="mb-4">
             <label className="block font-bold mb-2">이름</label>
             <input
@@ -118,37 +70,27 @@ export default function MyPage() {
               })}
               type="text"
               className="input input-bordered"
-              defaultValue={data?.user?.name}
+              defaultValue={data?.name}
             />
           </div>
           <span className=" text-sm text-red-600 dark:text-red-500">
             {errors.username?.message}
           </span>
+          <button type="submit" className="mt-4 block btn btn-primary">
+            저장
+          </button>
+
+          <div className="divider"></div>
 
           {/* <div className="mb-4">
           <label className="block font-bold mb-2">생년월일</label>
           <input type="date" className="input input-bordered " />
         </div> */}
-
-          <button type="submit" className="mt-4 block btn btn-primary">
-            저장
-          </button>
         </form>
+        <PatchPassword />
 
         <div className="divider"></div>
-        <div className="mb-4">
-          <form>
-            <label className="block font-bold mb-2">프로필 이미지</label>
-            <input
-              type="file"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs mr-4"
-            />
-            <button type="submit" className="btn btn-primary">
-              저장
-            </button>
-          </form>
-        </div>
-        <div className="divider"></div>
+        <PostImage />
         <div>
           <div className="block font-bold mb-2 text-red-500 dark:text-red-500">
             회원탈퇴
