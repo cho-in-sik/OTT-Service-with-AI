@@ -11,12 +11,6 @@ api.interceptors.request.use(
   async (
     config: InternalAxiosRequestConfig,
   ): Promise<InternalAxiosRequestConfig> => {
-    // let token = localStorage.getItem('accessToken');
-
-    // const isLogin = config.url?.includes('login');
-
-    // if (!isLogin && !token) window.location.replace('/');
-
     return config;
   },
   (error) => {
