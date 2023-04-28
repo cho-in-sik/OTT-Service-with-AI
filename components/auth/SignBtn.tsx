@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/util/customAxios';
+import { api } from '@/utils/api/customAxios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { api } from '@/util/customAxios';
+import { api } from '@/utils/api/customAxios';
 import { GoogleLoginBtn, GoogleSignUpBtn } from '@/components/auth/GoogleBtn';
 interface FormValue {
   email: string;

@@ -1,4 +1,4 @@
-import { api } from '@/util/customAxios';
+import { api } from '@/utils/api/customAxios';
 
 function GoogleLoginBtn() {
   async function login() {
