@@ -83,12 +83,12 @@ function SignIn() {
             <button type="submit" className="btn btn-primary w-full">
               로그인
             </button>
-            <GoogleLoginBtn />
-            <Link href="auth/sign-up">
+            <Link href="/auth/sign-up">
               <button type="button" className="mt-3 btn w-full">
                 회원가입
               </button>
             </Link>
+            <GoogleLoginBtn />
             <GoogleSignUpBtn />
           </div>
         </form>

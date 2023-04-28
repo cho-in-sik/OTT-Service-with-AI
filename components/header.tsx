@@ -95,9 +95,10 @@ export default async function Header() {
               {!cookie && (
                 <>
                   <li>
-                    <Link href="auth/sign-up">회원가입</Link>
+                    <Link href="/auth/sign-up">회원가입</Link>
                   </li>
                   <li>
+                    {/* <Link href="/auth/sign-in">로그인</Link> */}
                     <LoginBtn />
                   </li>
                 </>

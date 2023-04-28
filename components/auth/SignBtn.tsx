@@ -1,11 +1,19 @@
 'use client';
 
 import { api } from '@/utils/api/customAxios';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export function LoginBtn() {
-  return <Link href="/auth/sign-in">로그인</Link>;
+  const router = useRouter();
+  return (
+    <button
+      onClick={() => {
+        router.push('/auth/sign-in');
+      }}
+    >
+      로그인
+    </button>
+  );
 }
 
 export function LogoutBtn() {
