@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: Request) {
-  return NextResponse.json([
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return res.json([
     [
       {
         id: 0,
