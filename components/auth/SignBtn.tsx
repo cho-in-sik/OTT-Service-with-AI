@@ -1,24 +1,20 @@
 'use client';
 
-import { signIn, signOut } from 'next-auth/react';
+import { api } from '@/util/customAxios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function LoginBtn() {
-  return (
-    <button
-      onClick={() => {
-        signIn();
-      }}
-    >
-      로그인
-    </button>
-  );
+  return <Link href="/auth/sign-in">로그인</Link>;
 }
 
 export function LogoutBtn() {
+  const router = useRouter();
   return (
     <button
-      onClick={() => {
-        signOut();
+      onClick={async () => {
+        await api.post('/api/auth/logout');
+        router.refresh();
       }}
     >
       로그아웃

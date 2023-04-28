@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { cookies } from 'next/headers';
 
 export default async function Header() {
-  const session = await getServerSession(authOptions as any);
+  const cookie = cookies().get('ACCESS_TOKEN');
 
   return (
     <>
@@ -96,7 +95,7 @@ export default async function Header() {
               tabIndex={1}
               className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
             >
-              {!!session && (
+              {!!cookie && (
                 <>
                   <li>
                     <Link href="#">회원 정보 수정</Link>
@@ -109,7 +108,7 @@ export default async function Header() {
                   </li>
                 </>
               )}
-              {!session && (
+              {!cookie && (
                 <>
                   <li>
                     <Link href="auth/sign-up">회원가입</Link>
