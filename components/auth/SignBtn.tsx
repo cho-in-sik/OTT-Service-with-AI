@@ -14,6 +14,7 @@ export function LogoutBtn() {
     <button
       onClick={async () => {
         await api.post('/api/auth/logout');
+        router.push('/');
         router.refresh();
       }}
     >
