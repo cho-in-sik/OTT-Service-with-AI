@@ -1,18 +1,30 @@
 'use client';
-import React, { useState } from 'react';
 import Image from 'next/image';
-//@ts-ignore
-import Carousel from 'react-grid-carousel';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Movie } from '@/types/movie';
+import { Mousewheel, Pagination } from 'swiper';
 
 const MainCarousel = ({ list }: { list: Movie[] }) => {
   return (
     <>
       <div className="h-[600px] mb-10 bg-gradient-to-r from-cyan-500 to-blue-500">
-        <Carousel cols={1} rows={1} loop autoplay={2000} showDots hideArrow>
+        <Swiper
+          direction={'vertical'}
+          spaceBetween={30}
+          mousewheel={true}
+          pagination={{
+            clickable: true,
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          navigation={true}
+          modules={[Mousewheel, Pagination]}
+        >
           {list.map(({ posterUrl, title, id, overview }, idx) => {
             return (
-              <Carousel.Item key={idx}>
+              <SwiperSlide key={idx}>
                 <div
                   className="flex justify-around w-full h-full ml-auto mr-auto "
                   key={id}
@@ -33,10 +45,10 @@ const MainCarousel = ({ list }: { list: Movie[] }) => {
                     height={600}
                   />
                 </div>
-              </Carousel.Item>
+              </SwiperSlide>
             );
           })}
-        </Carousel>
+        </Swiper>
       </div>
     </>
   );
