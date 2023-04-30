@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
 import { cookies } from 'next/headers';
 
-export default async function Header() {
+export default function Header() {
   const cookie = cookies().get('ACCESS_TOKEN');
 
   return (
