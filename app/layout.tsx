@@ -3,6 +3,7 @@ import Footer from '../components/footer';
 import Header from '../components/header';
 import ReactQueryProvider from './ReactQueryProvider';
 import './globals.css';
+import 'swiper/swiper-bundle.min.css';
 import Loading from './loading';
 export const metadata = {
   title: 'Create Next App',
