@@ -15,17 +15,16 @@ export default function PostImage() {
       setUserImageUrl(image);
       setUserImageFile(file);
     }
-    console.log(file);
   };
 
   //아직안됨
   const handleProfileImg = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userImageFile) return alert('이미지가 선택되지 않았습니다');
-    console.log(userImageFile);
+    console.log(userImageFile.name);
 
     await api.post('/api/users/me/avatars', {
-      avatarUrl: userImageFile.name,
+      avatarUrl: `/images/avatars/${userImageFile.name}`,
     });
   };
   return (
@@ -35,11 +34,11 @@ export default function PostImage() {
         <input
           onChange={handleUserImageChange}
           type="file"
-          className="file-input file-input-bordered file-input-primary w-full max-w-xs mr-4"
+          className="file-input file-input-bordered file-input-primary w-full max-w-xs "
         />
         <div className="avatar">
-          <div className="w-24 rounded-full">
-            {/* <Image src="/example.png"/> */}
+          <div className="w-16 rounded-full">
+            <img src={userImageUrl} />
           </div>
         </div>
 
