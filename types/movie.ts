@@ -9,7 +9,7 @@ export interface Movie {
   posterUrl: string;
   lang: string;
   releaseDate: Date;
-  genre: string[];
+  genres: string[];
 }
 
 export type Genre =
