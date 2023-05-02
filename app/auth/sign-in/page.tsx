@@ -23,7 +23,7 @@ function SignIn() {
     const result = await api.post('/api/auth/login', data);
 
     if (result?.status === 200) {
-      router.push('/');
+      router.replace('/');
       router.refresh();
     }
   };
