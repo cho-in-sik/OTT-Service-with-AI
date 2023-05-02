@@ -30,6 +30,7 @@ export default function MyPage() {
       console.log('성공');
     },
   });
+  console.log(data);
 
   if (isLoading) {
     return <Loading />;
@@ -52,6 +53,7 @@ export default function MyPage() {
     <div className="flex">
       <div className="px-14 py-10 w-8/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">
         <form onSubmit={handleSubmit(onValid)}>
+          {/* <img src={`http://localhost:8080${data.avatarUrl}`} /> */}
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
             <span>{data?.email}</span>
