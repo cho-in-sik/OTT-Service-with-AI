@@ -1,5 +1,5 @@
 import { api } from '../customAxios';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Movie, Genre, Criteria } from '@/types/movie';
 import { Cache } from '@/types/common';
 
@@ -33,7 +33,7 @@ export const getLocalmovieList = async ({
   cache: Cache;
 }) => {
   const { data } = await api.get<Movie[]>(
-    `/api/movies${q('skip', skip)}${q('take', take)}${q('order', order)}${q(
+    `/api/movies?${q('skip', skip)}${q('take', take)}${q('order', order)}${q(
       'criteria',
       criteria,
     )}${q('genre', genre)}`,

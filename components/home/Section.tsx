@@ -21,7 +21,7 @@ const Section = ({ classification, list }: Props) => {
             <div>
               <Image
                 className="h-[400px]"
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}/${posterUrl}`}
+                src={posterUrl}
                 alt={title}
                 width={300}
                 height={400}
