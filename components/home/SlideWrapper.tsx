@@ -2,16 +2,17 @@
 
 import React, { PropsWithChildren } from 'react';
 import { Swiper } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Navigation, Scrollbar, Mousewheel, FreeMode } from 'swiper';
 
 const SlideWrapper = ({ children }: PropsWithChildren) => {
   return (
     <Swiper
       spaceBetween={50}
       slidesPerView={5}
-      slidesPerGroup={5}
-      navigation={true}
-      modules={[Navigation]}
+      scrollbar={true}
+      mousewheel={true}
+      freeMode={true}
+      modules={[Scrollbar, Mousewheel, FreeMode]}
       breakpoints={{
         640: {
           slidesPerView: 2,
