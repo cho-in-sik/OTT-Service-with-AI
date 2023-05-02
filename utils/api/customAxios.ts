@@ -14,6 +14,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log(error);
     alert(error.response?.data.message);
     throw error;
   },
@@ -22,9 +23,25 @@ api.interceptors.response.use(
   (res) => {
     return res;
   },
-  (error) => {
+  async (error) => {
+    const { config: originalRequest } = error;
+
+    if (error.response.status === 401)
+      return await api
+        .patch(`/api/auth/refresh-token`)
+        .then((res) => {
+          if (res.status === 200) {
+            return axios(originalRequest);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
+
     console.log(error);
     alert(error.response?.data.message);
+
     throw error;
   },
 );

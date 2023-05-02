@@ -5,11 +5,14 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('ACCESS_TOKEN');
 
-  if (request.nextUrl.pathname.includes('sign-in') && token)
+  if (request.nextUrl.pathname.includes('auth') && token)
+    return NextResponse.redirect(new URL('/', request.url));
+
+  if (request.nextUrl.pathname.includes('mypage') && !token)
     return NextResponse.redirect(new URL('/', request.url));
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/auth/sign-in'],
+  matcher: ['/auth/:path*', '/mypage/:path*'],
 };
