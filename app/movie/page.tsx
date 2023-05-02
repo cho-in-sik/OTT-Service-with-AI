@@ -20,13 +20,25 @@ export default function MovieDetail() {
   if (movieDetail === undefined) {
     return <h1>Error</h1>;
   }
+  function genres(arr: T[]) {
+    return arr.map((item) => item.name + ',');
+  }
   return (
     <div>
-      <h4>hello</h4>
-      <p>{movieDetail.title}</p>
-      <p>{movieDetail.voteAverage}</p>
-      <img src={movieDetail.posterUrl} />
-      <p>{movieDetail.overview}</p>
+      <img src={movieDetail.posterUrl} className="img" />
+      <p>Title : {movieDetail.title}</p>
+      <p>Genres : {genres(movieDetail.genres)}</p>
+      <p>Grade Average : {movieDetail.voteAverage}</p>
+      <p>Overview : {movieDetail.overview}</p>
+
+      <style jsx>
+        {`
+          .img {
+            width: 30%;
+            display: flex;
+          }
+        `}
+      </style>
     </div>
   );
 }
