@@ -1,3 +1,4 @@
+import DefaultLayout from '@/components/common/defaultLayout';
 import MainCarousel from '@/components/home/MainCarousel';
 import Section from '@/components/home/Section';
 import TmdbSection from '@/components/home/TmdbSection';
@@ -27,7 +28,7 @@ export default async function Home() {
   // const history = await getMovieHistory({ cache: 'no-store' });
 
   return (
-    <>
+    <DefaultLayout>
       {/* <MainCarousel list={popularMovies} /> */}
       <div>
         {/* <Section classification="찜한 영화" list={favorite} />
@@ -37,6 +38,6 @@ export default async function Home() {
         <TmdbSection classification="현재 상영작" list={nowPlaying.results} />
         <TmdbSection classification="개봉 예정작" list={upComing.results} />
       </div>
-    </>
+    </DefaultLayout>
   );
 }

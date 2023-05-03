@@ -24,16 +24,11 @@ export default function MyPage() {
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
 
-  const { data, isLoading, isError } = useQuery(['userInfo'], getUser, {
-    cacheTime: 1000,
+  const { data } = useQuery(['userInfo'], getUser, {
     onSuccess: () => {
       console.log('성공');
     },
   });
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   //수정
   const onValid = async (data: IFormData) => {
