@@ -1,7 +1,7 @@
 import React from 'react';
 import { getLocalmovieList } from '@/utils/api/home/getMovieList';
 import { Genre, Movie } from '@/types/movie';
-import Image from 'next/image';
+import Card from '@/components/movie/Card';
 
 const page = async ({
   searchParams,
@@ -20,14 +20,21 @@ const page = async ({
     });
   }
   return (
-    <div className="w-[80%] pt-16">
-      <h1>{searchParams ? searchParams['genre'] : 'ALL'}</h1>
-      <div className="grid grid-cols-4 gap-4">
-        {movieList.map(({ id, title, posterUrl, genres }, idx) => (
-          <div key={idx}>
-            <h3>{title}</h3>
-            <Image src={posterUrl} alt={title} width={400} height={300}></Image>
-          </div>
+    <div className="w-[80%] pt-16 mx-auto">
+      <div className="flex justify-center my-16 ">
+        <h1 className="p-5 text-4xl text-info outline">
+          {searchParams ? searchParams['genre'] : 'ALL'}
+        </h1>
+      </div>
+      <div className="grid grid-flow-row gap-4 place-items-center grid-cols-auto">
+        {movieList.map(({ id, title, posterUrl, genres }) => (
+          <Card
+            key={id}
+            id={id}
+            title={title}
+            posterUrl={posterUrl}
+            genres={genres}
+          />
         ))}
       </div>
     </div>

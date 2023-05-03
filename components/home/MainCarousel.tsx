@@ -22,7 +22,7 @@ const MainCarousel = ({ list }: { list: Movie[] }) => {
             return (
               <SwiperSlide key={idx}>
                 <div
-                  className="flex justify-around w-full h-full ml-auto mr-auto "
+                  className="justify-around w-full h-full ml-auto mr-auto md:flex "
                   key={id}
                   id={String(id)}
                 >
