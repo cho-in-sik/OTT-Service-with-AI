@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { api } from '@/utils/api/customAxios';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -25,16 +24,11 @@ export default function MyPage() {
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
 
-  const { data, isLoading, isError } = useQuery(['userInfo'], getUser, {
-    cacheTime: 1000,
+  const { data } = useQuery(['userInfo'], getUser, {
     onSuccess: () => {
       console.log('성공');
     },
   });
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   //수정
   const onValid = async (data: IFormData) => {
@@ -51,13 +45,12 @@ export default function MyPage() {
 
   return (
     <div className="flex">
-      <div className="px-14 py-10 w-10/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">
+      <div className="px-14 py-10 w-8/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">
         <form onSubmit={handleSubmit(onValid)}>
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
             <span>{data?.email}</span>
           </div>
-
           <div className="mb-4">
             <label className="block font-bold mb-2">이름</label>
             <input

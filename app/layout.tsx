@@ -19,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gray-900 ">
         <ReactQueryProvider>
-          <Header />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
+          {children}
+
           <Footer />
         </ReactQueryProvider>
       </body>

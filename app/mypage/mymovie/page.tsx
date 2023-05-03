@@ -1,8 +1,87 @@
+'use client';
+
+import Image from 'next/image';
+
+import { useQuery } from '@tanstack/react-query';
+import { getMyReview } from '@/utils/api/mypage/getMyReview';
+import { api } from '@/utils/api/customAxios';
+import profileBasicImg from '@/public/basicImg.jpeg';
+const data = [
+  {
+    id: 1,
+    title: '1리뷰입니다..',
+    overview: '맛있어요 이  영화',
+    rating: 5,
+    createdAt: '2023-04-16T01:41:43.000Z',
+    updatedAt: '2023-04-15T16:41:44.000Z',
+    author: {
+      id: 3,
+      name: 'abc',
+      avatarUrl: '/imgs/avatar/apassa21.png',
+    },
+  },
+  {
+    id: 2,
+    title: '2리뷰입니다..',
+    overview: '맛없어요 영화',
+    rating: 2,
+    createdAt: '2023-04-16T01:41:43.000Z',
+    updatedAt: '2023-04-15T16:41:44.000Z',
+    author: {
+      id: 3,
+      name: 'abc',
+      avatarUrl: '/imgs/avatar/apassa21.png',
+    },
+  },
+  {
+    id: 3,
+    title: '3리뷰입니다..',
+    overview: '시즌 2가 기다려지는 영화',
+    rating: 4,
+    createdAt: '2023-04-16T01:41:43.000Z',
+    updatedAt: '2023-04-15T16:41:44.000Z',
+    author: {
+      id: 3,
+      name: 'abc',
+      avatarUrl: '/imgs/avatar/apassa21.png',
+    },
+  },
+  {
+    id: 4,
+    title: '4리뷰입니다..',
+    overview: '역시 놀란! 놀랏습니다 ',
+    rating: 4,
+    createdAt: '2023-04-16T01:41:43.000Z',
+    updatedAt: '2023-04-15T16:41:44.000Z',
+    author: {
+      id: 3,
+      name: 'abc',
+      avatarUrl: '/imgs/avatar/apassa21.png',
+    },
+  },
+];
+
+interface IReviewData {
+  id: number;
+  title: string;
+  overview: string;
+  rating: number;
+}
+
 export default function MyMovie() {
+  // const { data } = useQuery(['myreviews'], getMyReview, {
+  //   onSuccess:console.log("성공")
+  // });
+
+  const handleReviewDelete = async (reviewId: number) => {
+    await api.delete(`/api/movies/reviews/${reviewId}`);
+  };
+
   return (
     <div className="flex">
       <div className="px-14 py-10 w-10/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">
-        <div className="stats shadow">
+        <div className="font-bold text-2xl mb-4">My Reviews</div>
+        <div className="stats shadow mb-10">
           <div className="stat">
             <div className="stat-figure text-primary">
               <svg
@@ -19,8 +98,9 @@ export default function MyMovie() {
                 ></path>
               </svg>
             </div>
-            <div className="stat-title">Total Likes</div>
-            <div className="stat-value text-primary">25.6K</div>
+            <div className="stat-title">Total Reviews</div>
+
+            <div className="stat-value text-primary">{data.length}</div>
             <div className="stat-desc">21% more than last month</div>
           </div>
 
@@ -40,8 +120,11 @@ export default function MyMovie() {
                 ></path>
               </svg>
             </div>
-            <div className="stat-title">Page Views</div>
-            <div className="stat-value text-secondary">2.6M</div>
+            <div className="stat-title">Average Rating</div>
+
+            <div className="stat-value text-secondary">
+              {data.map((item: IReviewData) => item.rating)}
+            </div>
             <div className="stat-desc">21% more than last month</div>
           </div>
 
@@ -49,11 +132,18 @@ export default function MyMovie() {
             <div className="stat-figure text-secondary">
               <div className="avatar online">
                 <div className="w-16 rounded-full">
-                  <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                  <Image
+                    className="h-[600px]"
+                    src={profileBasicImg}
+                    alt="기본이미지"
+                    width={100}
+                    height={100}
+                  />
                 </div>
               </div>
             </div>
-            <div className="stat-value">86%</div>
+            <div className="stat-value">{data[0].author.name}님</div>
+
             <div className="stat-title">Tasks done</div>
             <div className="stat-desc text-secondary">31 tasks remaining</div>
           </div>
@@ -65,33 +155,29 @@ export default function MyMovie() {
             <thead>
               <tr>
                 <th></th>
-                <th>Name</th>
-                <th>Job</th>
-                <th>Favorite Color</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>평점</th>
+                <th>리뷰 삭제</th>
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr>
-                <th>1</th>
-                <td>Cy Ganderton</td>
-                <td>Quality Control Specialist</td>
-                <td>Blue</td>
-              </tr>
-              {/* row 2 */}
-              <tr>
-                <th>2</th>
-                <td>Hart Hagerty</td>
-                <td>Desktop Support Technician</td>
-                <td>Purple</td>
-              </tr>
-              {/* row 3 */}
-              <tr>
-                <th>3</th>
-                <td>Brice Swyre</td>
-                <td>Tax Accountant</td>
-                <td>Red</td>
-              </tr>
+              {data.map((item: IReviewData, i) => (
+                <tr key={item.id}>
+                  <th>{i + 1}</th>
+                  <th>{item.title}</th>
+                  <td>{item.overview}</td>
+                  <td>{item.rating}</td>
+                  <td>
+                    <button
+                      className="btn bg-red-400 border-none"
+                      onClick={() => handleReviewDelete(item.id)}
+                    >
+                      삭제
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

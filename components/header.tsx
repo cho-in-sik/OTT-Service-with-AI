@@ -1,9 +1,33 @@
 import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
 import { cookies } from 'next/headers';
+import { getUser } from '@/utils/api/mypage/getUser';
+import { useQuery } from '@tanstack/react-query';
+
+// async function _getUser() {
+//   // if (sessionStorage.getItem('isLoggedIn') !== 'true'){
+//   //   return null;
+//   // }
+//   try {
+//     const user = await getUser();
+//     return user;
+//   } catch (err) {
+//     const e = err as Error;
+//     console.log('erororororororororororor');
+//     console.log(e);
+//     return null;
+//   }
+// }
 
 export default function Header() {
   const cookie = cookies().get('ACCESS_TOKEN');
+
+  // const user = null;
+  // const { data: user } = useQuery(['myInfo'], _getUser, {
+  //   suspense: true,
+  //   retry: 0,
+  //   // useErrorBoundary: true,
+  // });
 
   return (
     <>
