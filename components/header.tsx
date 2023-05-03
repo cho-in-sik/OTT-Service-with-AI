@@ -31,7 +31,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed z-[11] text-white duration-200 bg-transparent navbar hover:bg-base-100 hover:text-cyan-500">
+      <div className="fixed z-[11] text-white duration-200 bg-transparent navbar hover:bg-black hover:text-cyan-500">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -52,10 +52,28 @@ export default function Header() {
             </label>
             <ul
               tabIndex={0}
-              className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+              className="p-2 mt-3 bg-black shadow menu menu-compact dropdown-content rounded-box w-52"
             >
               <li>
-                <Link href="/">홈</Link>
+                <Link href="/movie">ALL</Link>
+                <Link href="/movie?genre=Action">Action</Link>
+                <Link href="/movie?genre=Adventure">Adventure</Link>
+                <Link href="/movie?genre=Animation">Animation</Link>
+                <Link href="/movie?genre=Comedy">Comedy</Link>
+                <Link href="/movie?genre=Crime">Crime</Link>
+                <Link href="/movie?genre=Documentary">Documentary</Link>
+                <Link href="/movie?genre=Drama">Drama</Link>
+                <Link href="/movie?genre=Family">Family</Link>
+                <Link href="/movie?genre=Fantasy">Fantasy</Link>
+                <Link href="/movie?genre=History">History</Link>
+                <Link href="/movie?genre=Music">Music</Link>
+                <Link href="/movie?genre=Mystery">Mystery</Link>
+                <Link href="/movie?genre=Romance">Romance</Link>
+                <Link href="/movie?genre=Science Fiction">Science Fiction</Link>
+                <Link href="/movie?genre=Thriller">Thriller</Link>
+                <Link href="/movie?genre=TV Movie">TV Movie</Link>
+                <Link href="/movie?genre=War">War</Link>
+                <Link href="/movie?genre=Western">Western</Link>
               </li>
             </ul>
           </div>

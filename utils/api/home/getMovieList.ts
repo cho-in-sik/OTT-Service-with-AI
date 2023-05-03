@@ -1,10 +1,10 @@
 import { api } from '../customAxios';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Movie, Genre, Criteria } from '@/types/movie';
 import { Cache } from '@/types/common';
 
 const q = (query: string, value: string | number | undefined) =>
-  query ? `?${query}=${value}` : '';
+  value !== undefined ? `${query}=${value}` : '';
 
 export const getTMDBMovieList = async (
   path: 'now_playing' | 'upcoming',
@@ -33,15 +33,21 @@ export const getLocalmovieList = async ({
   cache: Cache;
 }) => {
   const { data } = await api.get<Movie[]>(
-    `/api/movies${q('skip', skip)}${q('take', take)}${q('order', order)}${q(
+    `/api/movies?${q('skip', skip)}&${q('take', take)}&${q('order', order)}&${q(
       'criteria',
       criteria,
-    )}${q('genre', genre)}`,
+    )}&${q('genre', genre)}`,
     {
       headers: {
         'cache-control': cache,
       },
     },
+  );
+  console.log(
+    `/api/movies?${q('skip', skip)}${q('take', take)}${q('order', order)}${q(
+      'criteria',
+      criteria,
+    )}${q('genre', genre)}`,
   );
   return data;
 };
