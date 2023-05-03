@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import ReactQueryProvider from './ReactQueryProvider';
@@ -19,8 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ReactQueryProvider>
-          <Header />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
+          {children}
+          {/* <Suspense fallback={<Loading />}></Suspense> */}
           <Footer />
         </ReactQueryProvider>
       </body>

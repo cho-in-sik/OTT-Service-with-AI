@@ -5,7 +5,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
 
 export default function ReactQueryProvider({ children }: PropsWithChildren) {
-  const client = new QueryClient();
+  //retry를 안함
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={client}>

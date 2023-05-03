@@ -24,17 +24,12 @@ export default function MyPage() {
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
 
-  const { data, isLoading, isError } = useQuery(['userInfo'], getUser, {
-    cacheTime: 1000,
-    onSuccess: () => {
-      console.log('성공');
-    },
+  const { data } = useQuery(['userInfo'], getUser, {
+    suspense: true,
+    useErrorBoundary: true,
+    retry: 0,
   });
   console.log(data);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   //수정
   const onValid = async (data: IFormData) => {
@@ -49,6 +44,26 @@ export default function MyPage() {
     router.push('/');
   };
 
+  // if (1) {
+  //   throw new Error();
+  // }
+  // 원래는 이렇게 해줌
+  // MyPage에서 에러 발생시, Errorboundary의 fallback 컴포넌트가 렌더링
+  // MyPage 로딩 시, Suspense의 fallback 컴포넌트가 렌더링
+  // <Errorboundary fallback={<Error />}>
+  //   <Suspense fallback={<Loading />}></Suspense>
+  //   <MyPage/>
+  //   </Suspense>
+  //   </Errorboundary>
+
+  // Next 13부터는,
+  // 자동으로 ErrorBoundary와 Suspense를 '보이지 않지만' 자동으로 감싸줌
+  // <MyPage/> 와 같이 컴포넌트를 만들고, 가장 가까운 level의
+  // error.tsx가 ErrorBoundary의 fallback 컴포넌트가 되고,
+  // 가장 가까운 level의 loading.tsx가 Suspense의 fallback 컴포넌트가 됨
+  // 다만, top level의 template.tsx, layout.tsx는 제외.
+  // 이 둘은 top level의 global-error.tsx가 잡아줌
+  // 근데, 버그인듯.. 지금은 안잡아줌
   return (
     <div className="flex">
       <div className="px-14 py-10 w-8/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">

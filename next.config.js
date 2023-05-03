@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false, // 요청 두번 자꾸 보내는데 쓰잘데기가 없어서 끄는편이라고 함.
   experimental: {
     appDir: true,
   },

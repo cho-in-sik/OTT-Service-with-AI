@@ -1,3 +1,4 @@
+import DefaultLayout from '@/components/common/defaultLayout';
 import MainCarousel from '@/components/home/MainCarousel';
 import Section from '@/components/home/Section';
 import TmdbSection from '@/components/home/TmdbSection';
@@ -7,6 +8,12 @@ import {
   getLocalmovieList,
   getTMDBMovieList,
 } from '@/utils/api/home/getMovieList';
+
+/* <GlobalErrorBoundary> - app/global-error.tsx
+<RootLayout> - app/layout.tsx
+    <ErrorBoundary></ErrorBoundary> - app/error.tsx
+  </RootLayout>
+  </GlobalErrorBoundary> */
 
 export default async function Home() {
   // const popularMovies = await getLocalmovieList({
@@ -27,8 +34,9 @@ export default async function Home() {
   // const history = await getMovieHistory({ cache: 'no-store' });
 
   return (
-    <>
+    <DefaultLayout>
       {/* <MainCarousel list={popularMovies} /> */}
+
       <div>
         {/* <Section classification="찜한 영화" list={favorite} />
           <Section classification="시청한 영화" list={history} />
@@ -37,6 +45,6 @@ export default async function Home() {
         <TmdbSection classification="현재 상영작" list={nowPlaying.results} />
         <TmdbSection classification="개봉 예정작" list={upComing.results} />
       </div>
-    </>
+    </DefaultLayout>
   );
 }

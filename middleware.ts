@@ -12,12 +12,13 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.includes('auth') && ACCESS_TOKEN)
     return NextResponse.redirect(new URL('/', request.url));
 
-  if (
-    request.nextUrl.pathname.includes('mypage') &&
-    !ACCESS_TOKEN &&
-    !REFRESH_TOKEN
-  )
-    return NextResponse.redirect(new URL('/', request.url));
+  //TODO: 임시 비활성화
+  // if (
+  //   request.nextUrl.pathname.includes('mypage') &&
+  //   !ACCESS_TOKEN &&
+  //   !REFRESH_TOKEN
+  // )
+  //   return NextResponse.redirect(new URL('/', request.url));
 }
 
 // See "Matching Paths" below to learn more

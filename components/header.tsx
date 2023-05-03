@@ -1,9 +1,50 @@
+'use client';
+
 import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
 import { cookies } from 'next/headers';
+import { getUser } from '@/utils/api/mypage/getUser';
+import { useQuery } from '@tanstack/react-query';
+
+async function _getUser() {
+  // if (sessionStorage.getItem('isLoggedIn') !== 'true'){
+  //   return null;
+  // }
+  try {
+    const user = await getUser();
+    return user;
+  } catch (err) {
+    const e = err as Error;
+    console.log('erororororororororororor');
+    console.log(e);
+    return null;
+  }
+}
+
+// const SECOND =  1000;
+// const MINUTE = 60 *SECOND;
+// const HOUR = 60 * MINUTE;
+// const DAY = 24*HOUR;
+
+// const QUERY_KEY_ME = ['myInfo'];
 
 export default function Header() {
-  const cookie = cookies().get('ACCESS_TOKEN');
+  // const cookie = cookies().get('ACCESS_TOKEN');
+  const { data: user } = useQuery(['myInfo'], _getUser, {
+    suspense: true,
+    retry: 0,
+    // useErrorBoundary: true,
+  });
+
+  // <ErrorBoundary> - app/error.tsx
+
+  //   <DefaultLayout>
+  //     <Header/> <-- 오류 터짐
+  //   </DefaultLayout>
+
+  // </ErrorBoundary>
+
+  // console.log(user);
 
   return (
     <>
@@ -79,7 +120,7 @@ export default function Header() {
               tabIndex={1}
               className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
             >
-              {!!cookie && (
+              {!!user && (
                 <>
                   <li>
                     <Link href="mypage/myinfo">회원 정보 수정</Link>
@@ -92,7 +133,7 @@ export default function Header() {
                   </li>
                 </>
               )}
-              {!cookie && (
+              {!user && (
                 <>
                   <li>
                     <Link href="/auth/sign-up">회원가입</Link>

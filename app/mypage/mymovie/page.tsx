@@ -13,6 +13,7 @@ interface IReviewData {
   title: string;
   overview: string;
   rating: number;
+  author: [id: number, name: string, avatarUrl: string];
 }
 
 export default function MyMovie() {
