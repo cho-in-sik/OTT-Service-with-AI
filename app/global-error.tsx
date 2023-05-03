@@ -10,7 +10,7 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <h2>Something went wrong!</h2>
+        <h2>글로벌 에러 이건 어디에씀? Something went wrong!</h2>
         <button onClick={() => reset()}>Try again</button>
       </body>
     </html>

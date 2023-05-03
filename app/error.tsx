@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <div>
-      <h2>12121212Something went wrong!</h2>
+      <h2>루트 오류 wrong!</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment

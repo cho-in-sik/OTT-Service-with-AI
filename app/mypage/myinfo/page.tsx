@@ -9,6 +9,7 @@ import WidthDrawModal from '../withdrawModal';
 import Loading from '@/app/loading';
 import PatchPassword from '../patchPassword';
 import PostImage from '../postImage';
+import { error } from 'console';
 
 interface IFormData {
   username: string;
@@ -24,12 +25,12 @@ export default function MyPage() {
   //next 에서의 react-router-dom의 기능
   const router = useRouter();
 
-  const { data } = useQuery(['userInfo'], getUser, {
-    suspense: true,
-    useErrorBoundary: true,
-    retry: 0,
-  });
-  console.log(data);
+  // const { data } = useQuery(['userInfo'], getUser, {
+  //   suspense: true,
+  //   useErrorBoundary: true,
+  //   retry: 0,
+  // });
+  const data = null;
 
   //수정
   const onValid = async (data: IFormData) => {
@@ -43,10 +44,8 @@ export default function MyPage() {
     alert('수정완료');
     router.push('/');
   };
+  throw new Error();
 
-  // if (1) {
-  //   throw new Error();
-  // }
   // 원래는 이렇게 해줌
   // MyPage에서 에러 발생시, Errorboundary의 fallback 컴포넌트가 렌더링
   // MyPage 로딩 시, Suspense의 fallback 컴포넌트가 렌더링
@@ -71,7 +70,7 @@ export default function MyPage() {
           {/* <img src={`http://localhost:8080${data.avatarUrl}`} /> */}
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
-            <span>{data?.email}</span>
+            {/* <span>{data?.email}</span> */}
           </div>
           <div className="mb-4">
             <label className="block font-bold mb-2">이름</label>
@@ -85,7 +84,7 @@ export default function MyPage() {
               })}
               type="text"
               className="input input-bordered"
-              defaultValue={data?.name}
+              // defaultValue={data?.name}
             />
           </div>
           <span className=" text-sm text-red-600 dark:text-red-500">

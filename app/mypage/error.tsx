@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <div>
-      <h2>오류오류올유류류류류류</h2>
+      <h2>유저인포 오류</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment

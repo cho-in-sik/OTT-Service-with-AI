@@ -4,7 +4,8 @@ import React from 'react';
 const Loading = () => {
   return (
     <div className="w-[100vw] h-[100vh]">
-      <Spinner />
+      {/* <Spinner /> */}
+      <h1>글로벌 로딩</h1>
     </div>
   );
 };
