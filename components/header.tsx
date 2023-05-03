@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
 import { cookies } from 'next/headers';
@@ -22,9 +20,9 @@ import { useQuery } from '@tanstack/react-query';
 // }
 
 export default function Header() {
-  // const cookie = cookies().get('ACCESS_TOKEN');
+  const cookie = cookies().get('ACCESS_TOKEN');
 
-  const user = null;
+  // const user = null;
   // const { data: user } = useQuery(['myInfo'], _getUser, {
   //   suspense: true,
   //   retry: 0,
@@ -105,7 +103,7 @@ export default function Header() {
               tabIndex={1}
               className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
             >
-              {!!user && (
+              {!!cookie && (
                 <>
                   <li>
                     <Link href="mypage/myinfo">회원 정보 수정</Link>
@@ -118,7 +116,7 @@ export default function Header() {
                   </li>
                 </>
               )}
-              {!user && (
+              {!cookie && (
                 <>
                   <li>
                     <Link href="/auth/sign-up">회원가입</Link>
