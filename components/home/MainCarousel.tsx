@@ -2,31 +2,27 @@
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Movie } from '@/types/movie';
-import { Mousewheel, Pagination } from 'swiper';
+import { Mousewheel, Pagination, Autoplay } from 'swiper';
 
 const MainCarousel = ({ list }: { list: Movie[] }) => {
   return (
     <>
       <div className="h-[600px] mb-10 bg-gradient-to-r from-cyan-500 to-blue-500">
         <Swiper
-          direction={'vertical'}
           spaceBetween={30}
-          mousewheel={true}
-          pagination={{
-            clickable: true,
-          }}
           autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
+            delay: 2000,
+            disableOnInteraction: true,
           }}
-          navigation={true}
-          modules={[Mousewheel, Pagination]}
+          speed={1000}
+          loop={true}
+          modules={[Mousewheel, Pagination, Autoplay]}
         >
           {list.map(({ posterUrl, title, id, overview }, idx) => {
             return (
               <SwiperSlide key={idx}>
                 <div
-                  className="flex justify-around w-full h-full ml-auto mr-auto "
+                  className="justify-around w-full h-full ml-auto mr-auto md:flex "
                   key={id}
                   id={String(id)}
                 >
@@ -39,7 +35,7 @@ const MainCarousel = ({ list }: { list: Movie[] }) => {
                   {/* TODO: 이미지 클릭시 상세페이지로 이동 */}
                   <Image
                     className="h-[600px]"
-                    src={`http://localhost:3000/${posterUrl}`}
+                    src={posterUrl}
                     alt={title}
                     width={450}
                     height={600}
