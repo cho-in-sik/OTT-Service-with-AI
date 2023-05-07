@@ -4,27 +4,32 @@ import Image from 'next/image';
 
 export default function PostImage() {
   const [userImageUrl, setUserImageUrl] = useState('');
-  const [userImageFile, setUserImageFile] = useState<File | null>(null);
+  const [userImageFile, setUserImageFile] = useState<File>();
 
   const handleUserImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
+    //file은 불러온 파일의 바이너리(0,1,0,1,01,..데이터)
     if (file) {
-      //미리보기 사용해보려고 일단 적어보기 아직구현 x
-      let image = window.URL.createObjectURL(file);
-      setUserImageUrl(image);
+      //미리보기 사용
+
+      const localImageUrl = window.URL.createObjectURL(file);
+      setUserImageUrl(localImageUrl);
       setUserImageFile(file);
     }
   };
 
-  //아직안됨
   const handleProfileImg = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userImageFile) return alert('이미지가 선택되지 않았습니다');
-    console.log(userImageFile.name);
 
-    await api.post('/api/users/me/avatars', {
-      avatarUrl: `/images/avatars/${userImageFile.name}`,
+    const formData = new FormData();
+    formData.append('avatar', userImageFile);
+
+    await api.post('/api/users/me/avatars', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
   };
   return (

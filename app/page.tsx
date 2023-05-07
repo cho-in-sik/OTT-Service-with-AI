@@ -29,7 +29,7 @@ export default async function Home() {
 
   return (
     <DefaultLayout>
-      {/* <MainCarousel list={popularMovies} /> */}
+      <MainCarousel list={popularMovies} />
       <div>
         {/* <Section classification="찜한 영화" list={favorite} />
           <Section classification="시청한 영화" list={history} /> */}

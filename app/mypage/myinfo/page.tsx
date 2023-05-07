@@ -29,6 +29,7 @@ export default function MyPage() {
       console.log('성공');
     },
   });
+  console.log(data);
 
   //수정
   const onValid = async (data: IFormData) => {
@@ -45,7 +46,7 @@ export default function MyPage() {
 
   return (
     <div className="flex">
-      <div className="px-14 py-10 w-8/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl ">
+      <div className="px-14 py-10 w-8/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl bg-white">
         <form onSubmit={handleSubmit(onValid)}>
           <div className="mb-4">
             <label className="block font-bold mb-2">이메일</label>
