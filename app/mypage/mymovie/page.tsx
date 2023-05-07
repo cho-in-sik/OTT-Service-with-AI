@@ -17,7 +17,8 @@ interface IReviewData {
 }
 
 export default function MyMovie() {
-  const { data, isLoading } = useQuery(['myreviews'], getMyReview, {
+  const { data } = useQuery(['myreviews'], getMyReview, {
+    staleTime: 600000,
     retry: 0,
   });
   console.log(data);
@@ -36,9 +37,6 @@ export default function MyMovie() {
     await api.delete(`/api/movies/reviews/${reviewId}`);
     alert('리뷰 삭제 성공');
   };
-  if (isLoading) {
-    return <span>is loading</span>;
-  }
 
   return (
     <div className="flex">
