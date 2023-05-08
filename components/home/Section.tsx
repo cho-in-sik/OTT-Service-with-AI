@@ -12,7 +12,7 @@ interface Props {
 
 const Section = ({ classification, list }: Props) => {
   return (
-    <div className="relative my-20 px-36">
+    <div className="relative px-24 my-20">
       {/* TODO: Link  */}
       <button className="px-4 mb-5 text-4xl cursor-pointer hover:underline text-info">
         {classification}
