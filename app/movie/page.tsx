@@ -2,6 +2,7 @@ import React from 'react';
 import { getLocalmovieList } from '@/utils/api/home/getMovieList';
 import { Genre, Movie } from '@/types/movie';
 import Card from '@/components/movie/Card';
+import AdditionalCard from '@/components/movie/AdditionalCard';
 
 const page = async ({
   searchParams,
@@ -23,7 +24,9 @@ const page = async ({
     <div className="w-[80%] pt-16 mx-auto">
       <div className="flex justify-center my-16 ">
         <h1 className="p-5 text-4xl text-info outline">
-          {searchParams ? searchParams['genre'] : 'ALL'}
+          {searchParams && searchParams['genre'] !== undefined
+            ? searchParams['genre']
+            : 'ALL'}
         </h1>
       </div>
       <div className="grid grid-flow-row gap-4 place-items-center grid-cols-auto">
@@ -36,6 +39,7 @@ const page = async ({
             genres={genres}
           />
         ))}
+        <AdditionalCard lastId={movieList[movieList.length - 1].id || 0} />
       </div>
     </div>
   );
