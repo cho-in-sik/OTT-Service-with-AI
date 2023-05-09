@@ -9,7 +9,7 @@ const page = async ({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
-  let movieList: Movie[];
+  let movieList: { data: Movie[]; meta: { count: number; hasMore: boolean } };
   if (searchParams !== undefined) {
     movieList = await getLocalmovieList({
       genre: searchParams['genre'] as Genre,
@@ -20,6 +20,7 @@ const page = async ({
       cache: 'cache-force',
     });
   }
+  const { data, meta } = movieList;
   return (
     <div className="w-[80%] pt-16 mx-auto">
       <div className="flex justify-center my-16 ">
@@ -30,7 +31,7 @@ const page = async ({
         </h1>
       </div>
       <div className="grid grid-flow-row gap-4 place-items-center grid-cols-auto">
-        {movieList.map(({ id, title, posterUrl, genres }) => (
+        {data.map(({ id, title, posterUrl, genres }) => (
           <Card
             key={id}
             id={id}
@@ -39,7 +40,7 @@ const page = async ({
             genres={genres}
           />
         ))}
-        <AdditionalCard lastId={movieList[movieList.length - 1].id || 0} />
+        <AdditionalCard lastId={data[data.length - 1].id || 0} />
       </div>
     </div>
   );
