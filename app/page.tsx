@@ -26,17 +26,16 @@ export default async function Home() {
   const nowPlaying = await getTMDBMovieList('now_playing', 'cache-force');
   // const favorite = await getFavoriteMovies({ cache: 'no-store' });
   // const history = await getMovieHistory({ cache: 'no-store' });
-
   return (
     <DefaultLayout>
-      <MainCarousel list={popularMovies} />
+      <MainCarousel list={popularMovies.data} />
       <div>
         {/* <Section classification="찜한 영화" list={favorite} />
           <Section classification="시청한 영화" list={history} /> */}
-        <Section classification="Lastest Movies" list={newMovies} />
+        <Section classification="Lastest Movies" list={newMovies.data} />
         <Section
           classification="Movies with heightest evaluation"
-          list={topRated}
+          list={topRated.data}
         />
         <TmdbSection classification="현재 상영작" list={nowPlaying.results} />
         <TmdbSection classification="개봉 예정작" list={upComing.results} />

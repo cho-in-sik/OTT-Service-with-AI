@@ -42,6 +42,7 @@ const Card = ({ id, title, posterUrl, genres }: Props) => {
               className="cursor-pointer badge badge-outline max-h-32 hover:bg-cyan-500"
               onClick={() => {
                 router.push(`/movie?genre=${genre}`);
+                scrollTo({ top: 0, left: 0, behavior: 'smooth' });
               }}
             >
               {genre}

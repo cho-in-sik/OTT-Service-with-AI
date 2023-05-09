@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getLocalmovieList } from '@/utils/api/home/getMovieList';
@@ -17,33 +17,33 @@ const AdditionalCard = ({ lastId }: Props) => {
     threshold: 0,
   });
   const genre = useSearchParams()?.get('genre');
-  const [movieId, setMovieId] = useState(lastId); // alternative query param
-  const [skipNum, setSkipNum] = useState(20); // deprecated api query param
 
   const { data, fetchNextPage } = useInfiniteQuery(
-    ['movies', genre, skipNum],
-    async ({ pageParam = 1 }) => {
-      console.log('page:', pageParam);
-      let data: Movie[];
+    ['movies', genre],
+    async ({ pageParam = lastId }) => {
+      let totalData: {
+        data: Movie[];
+        meta: { count: number; hasMore: boolean };
+      };
       if (genre) {
-        data = await getLocalmovieList({
-          skip: skipNum,
+        totalData = await getLocalmovieList({
+          after: pageParam,
           cache: 'cache-force',
           genre: genre as Genre,
         });
       } else {
-        data = await getLocalmovieList({
-          skip: skipNum,
+        totalData = await getLocalmovieList({
+          after: pageParam,
           cache: 'cache-force',
         });
       }
-      return {
-        result: data,
-        nextPage: pageParam + 1,
-      };
+      return totalData;
     },
     {
-      getNextPageParam: (lastPage, pages) => lastPage.nextPage,
+      getNextPageParam: (lastPage, Allpages) => {
+        if (lastPage.meta.hasMore)
+          return lastPage.data[lastPage.data.length - 1].id;
+      },
     },
   );
 
@@ -53,8 +53,8 @@ const AdditionalCard = ({ lastId }: Props) => {
 
   return (
     <>
-      {data?.pages.map(({ result, nextPage }) => {
-        return result.map(({ id, title, genres, posterUrl }) => (
+      {data?.pages.map(({ data }) => {
+        return data.map(({ id, title, genres, posterUrl }: any) => (
           <Card
             key={id}
             id={id}
