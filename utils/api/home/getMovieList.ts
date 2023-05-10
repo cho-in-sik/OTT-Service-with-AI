@@ -1,10 +1,10 @@
 import { api } from '../customAxios';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Movie, Genre, Criteria } from '@/types/movie';
 import { Cache } from '@/types/common';
 
 const q = (query: string, value: string | number | undefined) =>
-  query ? `?${query}=${value}` : '';
+  value !== undefined ? `${query}=${value}` : '';
 
 export const getTMDBMovieList = async (
   path: 'now_playing' | 'upcoming',
@@ -18,25 +18,28 @@ export const getTMDBMovieList = async (
 };
 
 export const getLocalmovieList = async ({
-  skip,
-  take,
+  after,
+  count,
   order,
   criteria,
   genre,
   cache = 'cache-force',
 }: {
-  skip?: number;
-  take?: number;
+  after?: number;
+  count?: number;
   order?: 'desc' | 'asc';
   criteria?: Criteria;
   genre?: Genre;
   cache: Cache;
 }) => {
-  const { data } = await api.get<Movie[]>(
-    `/api/movies${q('skip', skip)}${q('take', take)}${q('order', order)}${q(
-      'criteria',
-      criteria,
-    )}${q('genre', genre)}`,
+  const { data } = await api.get<{
+    data: Movie[];
+    meta: { count: number; hasMore: boolean };
+  }>(
+    `/api/movies?${q('after', after)}${q('&count', count)}${q(
+      '&order',
+      order,
+    )}${q('&criteria', criteria)}${q('&genre', genre)}`,
     {
       headers: {
         'cache-control': cache,
@@ -47,16 +50,16 @@ export const getLocalmovieList = async ({
 };
 
 export const getMovieHistory = async ({
-  skip,
-  take,
+  after,
+  count,
   cache,
 }: {
-  skip?: number;
-  take?: number;
+  after?: number;
+  count?: number;
   cache: Cache;
 }) => {
   const { data } = await api.get<Movie[]>(
-    `api/users/me/movies/history${q('skip', skip)}${q('take', take)}`,
+    `api/users/me/movies/history${q('after', after)}${q('count', count)}`,
     {
       headers: {
         'cache-control': cache,
@@ -67,16 +70,16 @@ export const getMovieHistory = async ({
 };
 
 export const getFavoriteMovies = async ({
-  skip,
-  take,
+  after,
+  count,
   cache,
 }: {
-  skip?: number;
-  take?: number;
+  after?: number;
+  count?: number;
   cache: Cache;
 }) => {
   const { data } = await api.get<Movie[]>(
-    `api/users/me/movies/favorite${q('skip', skip)}${q('take', take)}`,
+    `api/users/me/movies/favorite${q('after', after)}${q('count', count)}`,
     {
       headers: {
         'cache-control': cache,

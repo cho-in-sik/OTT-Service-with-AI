@@ -26,7 +26,7 @@ api.interceptors.response.use(
   async (error) => {
     const { config: originalRequest } = error;
 
-    if (error.response.status === 401)
+    if (error.response?.data.code)
       return await api
         .patch(`/api/auth/refresh-token`)
         .then((res) => {

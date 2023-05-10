@@ -30,7 +30,7 @@ function SignIn() {
 
   return (
     <div className="flex">
-      <div className="px-14 py-10 w-4/12 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
+      <div className="px-14 py-10 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="mb-6">
             <label
