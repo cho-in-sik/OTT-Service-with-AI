@@ -127,6 +127,9 @@ export default function Header() {
                     <Link href="mypage/myinfo">회원 정보 수정</Link>
                   </li>
                   <li>
+                    <Link href="mypage/likemovie">좋아요한 영화</Link>
+                  </li>
+                  <li>
                     <Link href="mypage/mymovie">내가 쓴 리뷰</Link>
                   </li>{' '}
                   <li>

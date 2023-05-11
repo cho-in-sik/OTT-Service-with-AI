@@ -6,9 +6,6 @@ export function middleware(request: NextRequest) {
   const ACCESS_TOKEN = request.cookies.get('ACCESS_TOKEN');
   const REFRESH_TOKEN = request.cookies.get('REFRESH_TOKEN');
 
-  console.log(ACCESS_TOKEN);
-  console.log(REFRESH_TOKEN);
-
   if (request.nextUrl.pathname.includes('auth') && ACCESS_TOKEN)
     return NextResponse.redirect(new URL('/', request.url));
 

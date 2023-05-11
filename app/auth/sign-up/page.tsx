@@ -33,14 +33,13 @@ function SignUp() {
       })
       .then((response) => response.data);
 
-    console.log(result);
     alert('회원가입 완료');
     router.push('/');
   };
 
   return (
     <div className="flex">
-      <div className="px-14 py-10 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl">
+      <div className="px-14 py-10 mx-auto my-[128px] border-solid border border-gray-800/10 rounded-2xl shadow-2xl bg-white">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="mb-6">
             <label
