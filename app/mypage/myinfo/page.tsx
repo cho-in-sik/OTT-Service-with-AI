@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { getUser } from '@/utils/api/mypage/getUser';
 import WidthDrawModal from '../withdrawModal';
-import Loading from '@/app/loading';
 import PatchPassword from '../patchPassword';
 import PostImage from '../postImage';
 
@@ -25,6 +24,7 @@ export default function MyPage() {
   const router = useRouter();
 
   const { data } = useQuery(['userInfo'], getUser, {
+    suspense: true,
     onSuccess: () => {
       console.log('성공');
     },

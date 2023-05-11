@@ -1,54 +1,48 @@
 'use client';
 
+import { usePathname, useRouter } from 'next/navigation';
 import { getMovieReviews } from '@/utils/api/movie/getMovieReviews';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 import profileBasicImg from '@/public/basicImg.jpeg';
 import Image from 'next/image';
 import { IMovieReview } from '@/types/review';
 import { api } from '@/utils/api/customAxios';
+import { getDateBefore } from '@/utils/review/getDateBefore';
 
 export default function MovieReviews() {
-  const { data } = useQuery(['movieReviews'], getMovieReviews, {
-    staleTime: 600000,
+  const pathname = usePathname();
+
+  const url = Number(pathname?.slice(15));
+
+  const { data } = useQuery(['movieReviews'], () => getMovieReviews(url), {
     suspense: true,
+    staleTime: 600000,
+  });
+
+  console.log(data.data);
+
+  // 평균 평정 배열
+  let averageRating: Array<any> = [0];
+  const dataRating = data?.data.map((item: IMovieReview) =>
+    averageRating.push(item.rating),
+  );
+  const averRating = averageRating.reduce((prev: number, cur: number) => {
+    return prev + cur;
   });
 
   //리뷰삭제
   const handleReviewDelete = async (reviewId: number) => {
-    await api.delete(`/api/movies/reviews/${reviewId}`);
+    const res = await api.delete(`/api/movies/reviews/${reviewId}`);
+    console.log(res);
+
     alert('리뷰 삭제 성공');
   };
-
-  function getDateBefore(index: string) {
-    //지금
-    const nowDate = new Date().toString();
-    const madeDate = new Date(index).toUTCString();
-
-    //madeDate 와 nowDate 차이
-    const betweenTime = Math.floor(
-      (Date.parse(nowDate) - (Date.parse(madeDate) - 32399000)) / 1000 / 60,
-    );
-
-    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-
-    if (betweenTime < 1) return '방금전';
-    if (betweenTime < 60) {
-      return `${betweenTime}분전`;
-    }
-
-    const betweenTimeHour = Math.floor(betweenTime / 60);
-
-    if (betweenTimeHour < 24) {
-      return `${betweenTimeHour}시간전`;
-    }
-    if (betweenTimeDay < 365) {
-      return `${betweenTimeDay}일전`;
-    }
-  }
 
   return (
     <div className="flex">
       <div className="px-14 py-10 w-10/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl bg-white">
+        <div className="mb-8 font-bold text-3xl">{`${data.data[0].movieTitle} Reviews`}</div>
         <div className="overflow-x-auto w-full">
           <div className="stats shadow mb-8">
             <div className="stat">
@@ -88,28 +82,9 @@ export default function MovieReviews() {
                 </svg>
               </div>
               <div className="stat-title">Average Rating</div>
-              <div className="stat-value">4,200</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-figure text-secondary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="inline-block w-8 h-8 stroke-current"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-                  ></path>
-                </svg>
+              <div className="stat-value">
+                {(averRating / data.data.length).toFixed(2)}
               </div>
-              <div className="stat-title">New Registers</div>
-              <div className="stat-value">1,200</div>
-              <div className="stat-desc">↘︎ 90 (14%)</div>
             </div>
           </div>
 
@@ -132,19 +107,47 @@ export default function MovieReviews() {
                   <th>{i + 1}</th>
                   <td className="flex items-center space-x-3">
                     <div className="mask mask-squircle w-12 h-12 ">
-                      <Image src={profileBasicImg} alt="profilebasicimage" />
+                      {item.author.avatarUrl === null && (
+                        <Image src={profileBasicImg} alt="profilebasicimage" />
+                      )}
+                      <img
+                        src={`http://localhost:8080${item.author.avatarUrl}`}
+                      />
                     </div>
                     <div>
                       <div>{item.author.name}</div>
                     </div>
                   </td>
                   <td>{item.title}</td>
-                  <td className="overflow-hidden truncate">{item.content}</td>
+
+                  <td className="max-w-xs truncate overflow-hidden overflow-ellipsis underline underline-offset-4 ">
+                    <label htmlFor={`modal-${item.id}`}>{item.content}</label>
+
+                    <input
+                      type="checkbox"
+                      id={`modal-${item.id}`}
+                      className="modal-toggle"
+                    />
+                    <label
+                      htmlFor={`modal-${item.id}`}
+                      className="modal cursor-pointer"
+                    >
+                      <label className="modal-box relative">
+                        <h3 className="text-lg font-bold">Detail</h3>
+                        <p className="py-4 whitespace-normal overflow-hidden overflow-ellipsis">
+                          {item.content}
+                        </p>
+                      </label>
+                    </label>
+                  </td>
+
                   <td>{item.rating}</td>
-                  <td>{getDateBefore(item.createdAt)}</td>
+                  <td className="text-slate-500">
+                    {getDateBefore(item.createdAt)}
+                  </td>
                   <td>
                     <button
-                      className="btn btn-square"
+                      className="btn btn-square btn-outline btn-error"
                       onClick={() => handleReviewDelete(item.id)}
                     >
                       <svg
