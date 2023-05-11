@@ -8,25 +8,21 @@ import { api } from '@/utils/api/customAxios';
 import profileBasicImg from '@/public/basicImg.jpeg';
 import noReviewHeroImg from '@/public/hero.jpeg';
 import { useRouter } from 'next/navigation';
-
-interface IReviewData {
-  id: number;
-  title: string;
-  overview: string;
-  rating: number;
-}
+import { IMovieReview } from '@/types/review';
 
 export default function MyMovie() {
   const { data } = useQuery(['myreviews'], getMyReview, {
-    staleTime: 600000,
-    retry: 0,
+    suspense: true,
+    staleTime: 60000,
   });
-  console.log(data);
+
+  console.log(data.data);
+
   const router = useRouter();
 
   // 평균 평정 배열
   let averageRating: Array<any> = [0];
-  const dataRating = data?.map((item: IReviewData) =>
+  const dataRating = data.data.map((item: IMovieReview) =>
     averageRating.push(item.rating),
   );
   const averRating = averageRating.reduce((prev: number, cur: number) => {
@@ -35,19 +31,20 @@ export default function MyMovie() {
 
   const handleReviewDelete = async (reviewId: number) => {
     await api.delete(`/api/movies/reviews/${reviewId}`);
+
     alert('리뷰 삭제 성공');
   };
 
   return (
     <div className="flex">
       <div className="px-14 py-10 w-10/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl  bg-white">
-        {data.length === 0 ? (
+        {data.data.length === 0 ? (
           <div className="hero min-h-screen bg-base-200 rounded-2xl">
             <div className="hero-content flex-col lg:flex-row">
               <Image
                 src={noReviewHeroImg}
                 className="max-w-sm rounded-lg shadow-2xl mr-4"
-                alt="히어로이미지"
+                alt="heroImage"
               />
 
               <div>
@@ -88,7 +85,9 @@ export default function MyMovie() {
                 </div>
                 <div className="stat-title">Total Reviews</div>
 
-                <div className="stat-value text-primary">{data?.length}</div>
+                <div className="stat-value text-primary">
+                  {data?.data.length}
+                </div>
                 <div className="stat-desc">21% more than last month</div>
               </div>
 
@@ -111,7 +110,7 @@ export default function MyMovie() {
                 <div className="stat-title">Average Rating</div>
 
                 <div className="stat-value text-secondary">
-                  {(averRating / data.length).toFixed(2)}
+                  {(averRating / data.data.length).toFixed(2)}
                 </div>
                 <div className="stat-desc">21% more than last month</div>
               </div>
@@ -120,9 +119,9 @@ export default function MyMovie() {
                 <div className="stat-figure text-secondary">
                   <div className="avatar online">
                     <div className="w-16 rounded-full">
-                      {data[0].author.avatarUrl ? (
+                      {data.data[0].author.avatarUrl ? (
                         <img
-                          src={`http://localhost:8080${data[0].author.avatarUrl}`}
+                          src={`http://localhost:8080${data.data[0].author.avatarUrl}`}
                         />
                       ) : (
                         // <Image
@@ -141,7 +140,9 @@ export default function MyMovie() {
                     </div>
                   </div>
                 </div>
-                <div className="stat-value pt-5">{data[0].author.name}님</div>
+                <div className="stat-value pt-5">
+                  {data.data[0].author.name}님
+                </div>
 
                 {/* <div className="stat-title">Tasks done</div>
             <div className="stat-desc text-secondary">31 tasks remaining</div> */}
@@ -161,7 +162,7 @@ export default function MyMovie() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item: IReviewData, i: number) => (
+                  {data.data.map((item: IMovieReview, i: number) => (
                     <tr key={item.id}>
                       <th>{i + 1}</th>
                       <th className="whitespace-normal overflow-hidden overflow-ellipsis">
