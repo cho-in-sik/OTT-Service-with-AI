@@ -55,25 +55,37 @@ export default function Header() {
               className="p-2 mt-3 bg-black shadow menu menu-compact dropdown-content rounded-box w-52"
             >
               <li>
-                <Link href="/movie">ALL</Link>
-                <Link href="/movie?genre=Action">Action</Link>
-                <Link href="/movie?genre=Adventure">Adventure</Link>
-                <Link href="/movie?genre=Animation">Animation</Link>
-                <Link href="/movie?genre=Comedy">Comedy</Link>
-                <Link href="/movie?genre=Crime">Crime</Link>
-                <Link href="/movie?genre=Documentary">Documentary</Link>
-                <Link href="/movie?genre=Drama">Drama</Link>
-                <Link href="/movie?genre=Family">Family</Link>
-                <Link href="/movie?genre=Fantasy">Fantasy</Link>
-                <Link href="/movie?genre=History">History</Link>
-                <Link href="/movie?genre=Music">Music</Link>
-                <Link href="/movie?genre=Mystery">Mystery</Link>
-                <Link href="/movie?genre=Romance">Romance</Link>
-                <Link href="/movie?genre=Science Fiction">Science Fiction</Link>
-                <Link href="/movie?genre=Thriller">Thriller</Link>
-                <Link href="/movie?genre=TV Movie">TV Movie</Link>
-                <Link href="/movie?genre=War">War</Link>
-                <Link href="/movie?genre=Western">Western</Link>
+                <Link className="hover:underline" href="/movie">
+                  ALL
+                </Link>
+                {[
+                  'Action',
+                  'Adventure',
+                  'Animation',
+                  'Comedy',
+                  'Crime',
+                  'Documentary',
+                  'Drama',
+                  'Family',
+                  'Fantasy',
+                  'History',
+                  'Music',
+                  'Mystery',
+                  'Romance',
+                  'Science Fiction',
+                  'Thriller',
+                  'TV Movie',
+                  'War',
+                  'Western',
+                ].map((genre) => (
+                  <Link
+                    key={genre}
+                    className="hover:underline"
+                    href={`/movie?genre=${genre.replace(' ', '%20')}`}
+                  >
+                    {genre}
+                  </Link>
+                ))}
               </li>
             </ul>
           </div>
@@ -131,7 +143,10 @@ export default function Header() {
                   </li>
                   <li>
                     <Link href="mypage/mymovie">내가 쓴 리뷰</Link>
-                  </li>{' '}
+                  </li>
+                  <li>
+                    <Link href="mypage/history">최근 본 영화</Link>
+                  </li>
                   <li>
                     <LogoutBtn />
                   </li>
