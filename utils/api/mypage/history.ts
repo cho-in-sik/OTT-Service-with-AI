@@ -13,4 +13,4 @@ export const getHistory = async (lastId?: number, count?: number) => {
   return data;
 };
 export const deleteHistory = (movieId: number) =>
-  api.delete(`/api/movies/${movieId}/history`);
+  api.delete(`/api/movies/${movieId}/histories`);
