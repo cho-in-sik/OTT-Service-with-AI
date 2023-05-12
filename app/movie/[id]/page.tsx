@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/utils/api/customAxios';
 import { Movie } from '@/types/movie';
+import { IMovieReview } from '@/types/review';
 import Link from 'next/link';
 
 export default function MovieDetail({
@@ -21,9 +22,10 @@ export default function MovieDetail({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [rating, setRating] = useState(0);
+  const [reviews, setReviews] = useState([]);
   useEffect(() => {
     api
-      .get<Movie>(`/api/movies/${params.id}/detail`)
+      .get(`/api/movies/${params.id}/detail`)
       .then((res) => {
         setMovieDetail(res.data);
         setIsLiked(res.data.isLiked);
@@ -32,6 +34,13 @@ export default function MovieDetail({
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const res = await api.get(`api/movies/${params.id}/reviews`);
+      setReviews(res.data.data.slice(0, 3));
+    };
+    fetchReviews();
   }, []);
   if (movieDetail === undefined) {
     return <h1>Error</h1>;
@@ -42,11 +51,31 @@ export default function MovieDetail({
     setIsLiked((prev) => !prev);
   }
 
-  function handleClick() {
-    const reviewBody = { title, content, rating };
-    console.log(reviewBody);
-    // api.post(`api/movies/${params.id}/reviews`, reviewBody);
+  function validateReview(review: {
+    title: string;
+    content: string;
+    rating: number;
+  }) {
+    if (!review.title) return false;
+    if (!review.content) return false;
+    if (review.rating < 0 || review.rating > 10) return false;
+    return true;
   }
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const reviewBody = { title, content, rating };
+    if (validateReview(reviewBody)) {
+      await api
+        .post(`api/movies/${params.id}/reviews`, reviewBody)
+        .then((res) => {
+          console.log(res.data);
+        });
+
+      const res = await api.get(`api/movies/${params.id}/reviews`);
+      setReviews(res.data.data.slice(0, 3));
+    }
+  };
+
   return (
     <div className="main">
       <div className="l-container">
@@ -82,32 +111,56 @@ export default function MovieDetail({
               )}
             </button>
             <p>Title : {movieDetail.title}</p>
-            {/* <p>
+            <p>
               Genres :
-                {movieDetail.genres.map((item) => {
-                  const url = `/movie?genre=${item}`;
-                  return <Link href={url}>{item},</Link>;
-                })}
-            </p> */}
-            <p>genre : [a, b, c, d]</p>
+              {movieDetail.genres.map((item) => {
+                const url = `/movie?genre=${item}`;
+                return <Link href={url}>{item},</Link>;
+              })}
+            </p>
             <p>Grade Average : {movieDetail.voteAverage}</p>
             <p>Overview : {movieDetail.overview}</p>
           </div>
         </div>
       </div>
-      <form>
-        <input placeholder="title" onChange={(e) => setTitle(e.target.value)} />
-        <input
-          placeholder="content"
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <input
-          placeholder="rating"
-          type="number"
-          onChange={(e) => setRating(Number(e.target.value))}
-        />
-        <button onSubmit={() => handleClick()}>작성하기</button>
+      <form className="container mx-auto px-4 border-4 border-red bg-white">
+        <div className="flex flex-col">
+          <input
+            placeholder="title"
+            required
+            type="text"
+            className="w-60"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            placeholder="0-10"
+            type="number"
+            min="0"
+            max="10"
+            className="appearance-none w-40"
+            onChange={(e) => setRating(Number(e.target.value))}
+          />
+          <input
+            placeholder="content"
+            required
+            className="mt-4"
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </div>
+        <button onClick={(e) => handleClick(e)}>작성하기</button>
+        <Link href={`/movie/reviews/${params.id}`}>리뷰 목록</Link>
       </form>
+      <div className="bg-white">
+        {reviews.map((review: IMovieReview, index: number) => (
+          <ul key={index}>
+            <div>
+              <p>
+                {review.title}, {review.rating}
+              </p>
+            </div>
+          </ul>
+        ))}
+      </div>
       <style jsx>
         {`
           .main {
