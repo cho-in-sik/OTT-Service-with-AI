@@ -3,10 +3,9 @@
 import Loading from '@/app/loading';
 import { getHistory } from '@/utils/api/mypage/history';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import Section from '@/components/history/Section';
 
 const Page = () => {
   const { data, isLoading, fetchNextPage } = useInfiniteQuery(
@@ -30,22 +29,23 @@ const Page = () => {
     fetchNextPage();
   }, [inView]);
 
-  useMemo(() => {
-    dayjs.extend(relativeTime);
-  }, []);
-
   if (isLoading) return <Loading />;
   if (data?.pages.length === 0) {
     return <div>시청 기록 없음</div>;
   }
   return (
-    <div className="h-[100vh] pt-24">
+    <div className="min-h-[100vh] pt-24 w-[70%] mx-auto">
       {data?.pages.map(({ data }) => {
         return data.map(
-          ({ id, title, genres, posterUrl, lastViewedAt }: any) => (
-            <div className="text-4xl text-white" key={id}>
-              {title} {dayjs(lastViewedAt).fromNow()}
-            </div>
+          ({ id, title, backdropUrl, lastViewedAt, overview }: any) => (
+            <Section
+              key={id}
+              movieId={id}
+              title={title}
+              backdropUrl={backdropUrl}
+              lastViewedAt={lastViewedAt}
+              overview={overview}
+            />
           ),
         );
       })}
