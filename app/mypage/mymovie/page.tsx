@@ -16,8 +16,6 @@ export default function MyMovie() {
     staleTime: 60000,
   });
 
-  console.log(data.data);
-
   const router = useRouter();
 
   // 평균 평정 배열

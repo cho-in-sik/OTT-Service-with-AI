@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getMovieReviews } from '@/utils/api/movie/getMovieReviews';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -8,23 +9,63 @@ import profileBasicImg from '@/public/basicImg.jpeg';
 import Image from 'next/image';
 import { IMovieReview } from '@/types/review';
 import { api } from '@/utils/api/customAxios';
-import { getDateBefore } from '@/utils/review/getDateBefore';
+import { getTimeDiff } from '@/utils/review/getTimeDiff';
+import { newInitPaginationResult } from '@/types/paginationResult';
 
 export default function MovieReviews() {
   const pathname = usePathname();
-
   const url = Number(pathname?.slice(15));
 
-  const { data } = useQuery(['movieReviews'], () => getMovieReviews(url), {
-    suspense: true,
-    staleTime: 600000,
-  });
+  // 추가 fetch할 때, hasMore 검사 후
+  // true면 더 가져오고 아니면 요청을 보내지 않는 처리(infinite scroll 할 때)
 
-  console.log(data.data);
+  const [sortedReviews, setSortedReviews] = useState<IMovieReview[]>([]);
+  const { data: paginationResult } = useQuery(
+    ['movieReviews'],
+    () => getMovieReviews(url),
+    {
+      initialData: newInitPaginationResult(),
+      initialDataUpdatedAt: () => 0,
+      suspense: true,
+      staleTime: 600000,
+      onSuccess: ({ data }) => {
+        console.log(data);
+        setSortedReviews([...data]);
+        console.log(sortedReviews);
+      },
+    },
+  );
 
+  const sortData = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLSelectElement>) => {
+    let sortedReviewsTemp: IMovieReview[] = [];
+
+    if (value === 'new') {
+      sortedReviewsTemp = sortedReviewsTemp.sort(
+        (a, b) =>
+          new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
+      );
+    } else if (value === 'old') {
+      sortedReviewsTemp = sortedReviewsTemp.sort(
+        (a, b) =>
+          new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf(),
+      );
+    } else if (value === 'highRating') {
+      sortedReviewsTemp = sortedReviewsTemp.sort((a, b) => b.rating - a.rating);
+    } else if (value === 'lowRating') {
+      sortedReviewsTemp = sortedReviewsTemp.sort((a, b) => a.rating - b.rating);
+    }
+    console.log(sortedReviewsTemp);
+    setSortedReviews(sortedReviewsTemp);
+  };
+
+  // useEffect(() => {
+  //   console.log(sortedReviews);
+  // }, [sortedReviews]);
   // 평균 평정 배열
   let averageRating: Array<any> = [0];
-  const dataRating = data?.data.map((item: IMovieReview) =>
+  const dataRating = paginationResult?.data.map((item: IMovieReview) =>
     averageRating.push(item.rating),
   );
   const averRating = averageRating.reduce((prev: number, cur: number) => {
@@ -42,7 +83,8 @@ export default function MovieReviews() {
   return (
     <div className="flex">
       <div className="px-14 py-10 w-10/12 mx-auto my-16 border-solid border border-gray-800/10 rounded-2xl shadow-2xl bg-white">
-        <div className="mb-8 font-bold text-3xl">{`${data.data[0].movieTitle} Reviews`}</div>
+        {/* <div className="mb-8 font-bold text-3xl">{`${sortedReviews.movieTitle} Reviews`}</div> */}
+
         <div className="overflow-x-auto w-full">
           <div className="stats shadow mb-8">
             <div className="stat">
@@ -62,7 +104,7 @@ export default function MovieReviews() {
                 </svg>
               </div>
               <div className="stat-title">Reviews</div>
-              <div className="stat-value">{data.data.length}</div>
+              <div className="stat-value">{sortedReviews.length}</div>
             </div>
 
             <div className="stat">
@@ -83,10 +125,20 @@ export default function MovieReviews() {
               </div>
               <div className="stat-title">Average Rating</div>
               <div className="stat-value">
-                {(averRating / data.data.length).toFixed(2)}
+                {(averRating / sortedReviews.length).toFixed(2)}
               </div>
             </div>
           </div>
+
+          <select
+            onChange={sortData}
+            className="select select-bordered select-sm  max-w-xs block mb-4"
+          >
+            <option value="new">최신순</option>
+            <option value="old">오래된 순</option>
+            <option value="highRating">평점 높은 순</option>
+            <option value="lowRating">평점 낮은 순</option>
+          </select>
 
           <table className="table table-zebra w-full">
             {/* head */}
@@ -102,7 +154,7 @@ export default function MovieReviews() {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((item: IMovieReview, i: number) => (
+              {sortedReviews.map((item: IMovieReview, i: number) => (
                 <tr key={item.id}>
                   <th>{i + 1}</th>
                   <td className="flex items-center space-x-3">
@@ -143,7 +195,7 @@ export default function MovieReviews() {
 
                   <td>{item.rating}</td>
                   <td className="text-slate-500">
-                    {getDateBefore(item.createdAt)}
+                    {getTimeDiff(item.createdAt)}
                   </td>
                   <td>
                     <button
