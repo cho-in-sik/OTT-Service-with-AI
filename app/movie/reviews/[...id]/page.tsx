@@ -20,7 +20,7 @@ export default function MovieReviews() {
   // true면 더 가져오고 아니면 요청을 보내지 않는 처리(infinite scroll 할 때)
 
   const [sortedReviews, setSortedReviews] = useState<IMovieReview[]>([]);
-  const { data: paginationResult } = useQuery(
+  const { data: paginationResult, isFetched } = useQuery(
     ['movieReviews'],
     () => getMovieReviews(url),
     {
@@ -28,13 +28,12 @@ export default function MovieReviews() {
       initialDataUpdatedAt: () => 0,
       suspense: true,
       staleTime: 600000,
-      onSuccess: ({ data }) => {
-        console.log(data);
-        setSortedReviews([...data]);
-        console.log(sortedReviews);
-      },
     },
   );
+
+  useEffect(() => {
+    setSortedReviews(paginationResult.data);
+  }, [isFetched]);
 
   const sortData = ({
     target: { value },
@@ -42,27 +41,26 @@ export default function MovieReviews() {
     let sortedReviewsTemp: IMovieReview[] = [];
 
     if (value === 'new') {
-      sortedReviewsTemp = sortedReviewsTemp.sort(
+      sortedReviewsTemp = sortedReviews.sort(
         (a, b) =>
           new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf(),
       );
+      console.log('new');
     } else if (value === 'old') {
-      sortedReviewsTemp = sortedReviewsTemp.sort(
+      console.log('old');
+      sortedReviewsTemp = sortedReviews.sort(
         (a, b) =>
           new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf(),
       );
     } else if (value === 'highRating') {
-      sortedReviewsTemp = sortedReviewsTemp.sort((a, b) => b.rating - a.rating);
+      sortedReviewsTemp = sortedReviews.sort((a, b) => b.rating - a.rating);
     } else if (value === 'lowRating') {
-      sortedReviewsTemp = sortedReviewsTemp.sort((a, b) => a.rating - b.rating);
+      sortedReviewsTemp = sortedReviews.sort((a, b) => a.rating - b.rating);
     }
     console.log(sortedReviewsTemp);
-    setSortedReviews(sortedReviewsTemp);
+    setSortedReviews([...sortedReviewsTemp]);
   };
 
-  // useEffect(() => {
-  //   console.log(sortedReviews);
-  // }, [sortedReviews]);
   // 평균 평정 배열
   let averageRating: Array<any> = [0];
   const dataRating = paginationResult?.data.map((item: IMovieReview) =>
