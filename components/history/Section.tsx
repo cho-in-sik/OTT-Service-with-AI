@@ -36,29 +36,39 @@ const Section = ({
     dayjs.extend(relativeTime);
   }, []);
 
-  const { mutate, isLoading } = useMutation(() => deleteHistory(movieId), {
-    onMutate: async (newTodo) => {
-      await queryClient.cancelQueries({ queryKey: ['history'] });
-      const previousTodos = queryClient.getQueryData(['history']);
+  // TODO
+  // const { mutate, isLoading } = useMutation(() => deleteHistory(movieId), {
+  //   onMutate: async () => {
+  //     await queryClient.cancelQueries({ queryKey: ['history'] });
+  //     const previousMovies = queryClient.getQueryData(['history']);
+  //     console.log('onMuate', previousMovies);
+  //     queryClient.setQueryData<
+  //       InfiniteData<{
+  //         data: Movie[];
+  //         meta: { count: number; hasMore: boolean };
+  //       }>
+  //     >(['history'], (oldData) => {
+  //       const newData = oldData?.pages.map(({ data, meta }) => {
+  //         const filteredData = data.filter((movie) => movie.id !== movieId);
+  //         const modifiedMata = {
+  //           ...meta,
+  //           count: meta.count - 1,
+  //         };
+  //         return { data: filteredData, meta: modifiedMata };
+  //       });
+  //       return newData;
+  //     });
+  //   },
 
-      queryClient.setQueryData<
-        InfiniteData<{
-          data: Movie[];
-          meta: { count: number; hasMore: boolean };
-        }>
-      >(['history'], (oldData) => {
-        return oldData;
-      });
+  //   onError: (error, newTodo, rollback) => {
+  //     // rollback()
+  //     console.log(error);
+  //   },
 
-      return () => queryClient.setQueryData(['history'], previousTodos);
-    },
-
-    onError: (error, newTodo, rollback) => rollback(),
-
-    onSettled: () => {
-      queryClient.invalidateQueries(['history']);
-    },
-  });
+  //   onSettled: () => {
+  //     queryClient.invalidateQueries(['history']);
+  //   },
+  // });
 
   return (
     <div className="flex text-[#fff] my-4 relative">
@@ -85,7 +95,8 @@ const Section = ({
           className="absolute top-0 right-0 tooltip tooltip-bottom"
           data-tip="시청 기록에서 삭제 "
           onClick={() => {
-            deleteHistory(movieId);
+            // TODO
+            //mutate();
           }}
         >
           <svg
