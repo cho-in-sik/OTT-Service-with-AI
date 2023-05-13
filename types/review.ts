@@ -12,4 +12,5 @@ export interface IMovieReview {
   rating: number;
   title: string;
   overview: string;
+  movieTitle: string;
 }
