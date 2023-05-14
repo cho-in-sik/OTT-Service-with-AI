@@ -6,6 +6,8 @@ import { api } from '@/utils/api/customAxios';
 import { Movie } from '@/types/movie';
 import { IMovieReview } from '@/types/review';
 import Link from 'next/link';
+import Image from 'next/image';
+import profileBasicImg from '@/public/basicImg.jpeg';
 
 export default function MovieDetail({
   params,
@@ -123,49 +125,80 @@ export default function MovieDetail({
           </div>
         </div>
       </div>
-      <form className="container mx-auto px-4 border-4 border-red bg-white">
-        <div className="flex flex-col">
-          <input
-            placeholder="title"
-            required
-            type="text"
-            className="w-60"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            placeholder="0-10"
-            type="number"
-            min="0"
-            max="10"
-            className="appearance-none w-40"
-            onChange={(e) => setRating(Number(e.target.value))}
-          />
-          <input
-            placeholder="content"
-            required
-            className="mt-4"
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-        <button onClick={(e) => handleClick(e)}>작성하기</button>
-        <Link href={`/movie/reviews/${params.id}`}>리뷰 목록</Link>
-      </form>
-      <div className="bg-white">
-        {reviews.map((review: IMovieReview, index: number) => (
-          <ul key={index}>
-            <div>
-              <p>
-                {review.title}, {review.rating}
-              </p>
-            </div>
-          </ul>
-        ))}
+
+      <div className="bg-white w-10/12 px-14 py-10 mx-auto">
+        <form className="container mx-auto px-4 py-4 mb-4 border">
+          <div className="grid grid-cols-3">
+            <input
+              placeholder="title"
+              required
+              type="text"
+              className="col-span-2 mr-4 border rounded-lg px-2"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <input
+              placeholder="0-10"
+              type="number"
+              min="0"
+              max="10"
+              className="appearance-none w-40 border rounded-lg px-2"
+              onChange={(e) => setRating(Number(e.target.value))}
+            />
+            <input
+              placeholder="content"
+              required
+              className="col-span-3 my-4 border rounded-lg px-2"
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
+          <button
+            className="rounded-lg bg-blue-500 text-white px-4 py-2 mx-2 mt-2"
+            onClick={(e) => handleClick(e)}
+          >
+            작성하기
+          </button>
+          <Link
+            className="rounded-lg bg-green-500 text-white px-4 py-3 mx-2 mt-2"
+            href={`/movie/reviews/${params.id}`}
+          >
+            리뷰 목록
+          </Link>
+        </form>
+        <p>최신 리뷰</p>
+        <table className="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Writer</th>
+              <th>Title</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviews.map((review: IMovieReview, index: number) => (
+              <tr key={index}>
+                <td className="flex items-center space-x-3">
+                  <div className="mask mask-squircle w-12 h-12">
+                    {review.author.avatarUrl === null && (
+                      <Image src={profileBasicImg} alt="profilebasicimage" />
+                    )}
+                    <img
+                      src={`http://localhost:8080${review.author.avatarUrl}`}
+                    />
+                  </div>
+                  <div>{review.author.name}</div>
+                </td>
+                <td>{review.title}</td>
+                <td>{review.rating}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <style jsx>
         {`
           .main {
-            padding-top: 100px;
             min-height: 110vh;
+            padding-top: 70px;
           }
           .back-img {
             position: absolute;
@@ -174,15 +207,16 @@ export default function MovieDetail({
           }
           .l-container {
             align-items: end;
-            border: solid red 1px;
             height: 800px;
+            border: solid black 1px;
           }
           .s-container {
             position: relative;
-            width: 60%;
+            width: 70%;
             display: flex;
             align-items: end;
             margin-left: 10%;
+            margin-top: 30%;
           }
           .text {
             color: white;
