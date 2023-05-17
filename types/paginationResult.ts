@@ -1,3 +1,5 @@
+import { IMovieReview } from './review';
+
 export interface PaginationResult<T> {
   meta: PaginationMeta;
   data: T[];
@@ -5,18 +7,17 @@ export interface PaginationResult<T> {
 
 interface PaginationMeta {
   count: number;
+  // 데이터 더 있는지 판단
   hasMore: boolean;
+  // after에 넣을 id
+  lastId: number | null;
 }
 
-export const newInitPaginationResult = () => ({
+export default (): PaginationResult<IMovieReview> => ({
   meta: {
     count: 0,
     hasMore: true,
+    lastId: null,
   },
   data: [],
 });
-
-// [1,2,3,4,5,6,...,10]
-// -> 뒤에없음
-// hasMore true면은 보내고, 아니면 안보냄
-// -> 요청을 한 번 더 보내야됨...
