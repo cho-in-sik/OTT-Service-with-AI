@@ -210,7 +210,7 @@ export default function MovieDetail({
           }
           .l-container {
             align-items: end;
-            height: 800px;
+            height: 58vw;
             border: solid black 1px;
           }
           .s-container {
