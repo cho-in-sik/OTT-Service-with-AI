@@ -40,7 +40,7 @@ api.interceptors.response.use(
         });
 
     console.log(error);
-    alert(error.response?.data.message);
+    // alert(error.response?.data.message);
 
     throw error;
   },

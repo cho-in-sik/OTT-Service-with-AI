@@ -10,6 +10,8 @@ export interface Movie {
   lang: string;
   releaseDate: Date;
   genres: string[];
+  isLiked: boolean;
+  isFavorite: boolean;
 }
 
 export type Genre =

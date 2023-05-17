@@ -88,3 +88,24 @@ export const getFavoriteMovies = async ({
   );
   return data;
 };
+
+export const getLikeMovieList = async ({
+  after,
+  count,
+  cache,
+}: {
+  after?: number;
+  count?: number;
+  cache: Cache;
+}) => {
+  const { data } = await api.get<{
+    data: Movie[];
+    meta: { count: number; hasMore: boolean };
+  }>(`/api/movies/likes?${q('after', after)}${q('count', count)}`, {
+    headers: {
+      'cache-control': cache,
+    },
+  });
+
+  return data;
+};
