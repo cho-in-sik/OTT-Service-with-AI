@@ -31,7 +31,6 @@ export default function MovieDetail({
       .then((res) => {
         setMovieDetail(res.data);
         setIsLiked(res.data.isLiked);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -60,7 +59,7 @@ export default function MovieDetail({
   }) {
     if (!review.title) return false;
     if (!review.content) return false;
-    if (review.rating < 0 || review.rating > 10) return false;
+    if (review.rating < 0 || review.rating > 100) return false;
     return true;
   }
   const handleClick = async (e) => {
@@ -137,10 +136,10 @@ export default function MovieDetail({
               onChange={(e) => setTitle(e.target.value)}
             />
             <input
-              placeholder="0-10"
+              placeholder="0-100"
               type="number"
               min="0"
-              max="10"
+              max="100"
               className="appearance-none w-40 border rounded-lg px-2"
               onChange={(e) => setRating(Number(e.target.value))}
             />
