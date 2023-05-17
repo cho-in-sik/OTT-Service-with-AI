@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getLocalmovieList } from '@/utils/api/home/getMovieList';
@@ -10,17 +10,15 @@ import Card from './Card';
 
 interface Props {
   lastId: number;
-  isMounted: boolean;
 }
 
-const AdditionalCard = ({ lastId, isMounted }: Props) => {
-  const [isMore, setIsMore] = useState(false);
+const AdditionalCard = ({ lastId }: Props) => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
   const genre = useSearchParams()?.get('genre');
 
-  const { data, fetchNextPage, status } = useInfiniteQuery(
+  const { data, fetchNextPage } = useInfiniteQuery(
     ['movies', genre],
     async ({ pageParam = lastId }) => {
       let totalData: {
@@ -32,13 +30,11 @@ const AdditionalCard = ({ lastId, isMounted }: Props) => {
           after: pageParam,
           cache: 'cache-force',
           genre: genre as Genre,
-          count: 12,
         });
       } else {
         totalData = await getLocalmovieList({
           after: pageParam,
           cache: 'cache-force',
-          count: 12,
         });
       }
       return totalData;
@@ -55,21 +51,6 @@ const AdditionalCard = ({ lastId, isMounted }: Props) => {
     fetchNextPage();
   }, [inView]);
 
-  if (!isMore)
-    return (
-      <>
-        <button
-          className="absolute mx-auto bottom-5 btn btn-outline btn-success"
-          onClick={() => {
-            setIsMore(true);
-          }}
-        >
-          Fetch More?
-        </button>
-        <div className="mt-20" />
-      </>
-    );
-
   return (
     <>
       {data?.pages.map(({ data }) => {
@@ -83,10 +64,9 @@ const AdditionalCard = ({ lastId, isMounted }: Props) => {
           />
         ));
       })}
-      {status === 'loading' && (
-        <div className="text-4xl text-white">loading...</div>
-      )}
-      <div className="text-xl text-white" ref={ref} />
+      <div className="text-xl text-white" ref={ref}>
+        이게 보이면 추가 load 할거임
+      </div>
     </>
   );
 };

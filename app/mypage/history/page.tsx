@@ -35,11 +35,10 @@ const Page = () => {
   }
   return (
     <div className="min-h-[100vh] pt-24 w-[70%] mx-auto">
-      {data?.pages.map(({ data }, idx) => {
+      {data?.pages.map(({ data }) => {
         return data.map(
           ({ id, title, backdropUrl, lastViewedAt, overview }: any) => (
             <Section
-              page={idx}
               key={id}
               movieId={id}
               title={title}
@@ -50,7 +49,9 @@ const Page = () => {
           ),
         );
       })}
-      <div ref={ref} />
+      <div className="text-xl text-white" ref={ref}>
+        이게 보이면 추가 load 할거임
+      </div>
     </div>
   );
 };

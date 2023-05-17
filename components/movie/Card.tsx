@@ -31,7 +31,10 @@ const Card = ({ id, title, posterUrl, genres }: Props) => {
         />
       </figure>
       <div className="card-body h-36">
-        <h2 className="max-h-16 card-title w-60">{title}</h2>
+        <h2 className="max-h-16 card-title w-60">
+          {title}
+          {/* <div className="badge badge-secondary">NEW</div> */}
+        </h2>
         <div className="justify-end card-actions">
           {genres.map((genre, idx) => (
             <div

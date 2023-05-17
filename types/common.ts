@@ -4,8 +4,3 @@ export type Cache =
   | 'cache-force'
   | 'reload'
   | 'only-if-cached';
-
-export interface Meta {
-  hasMore: boolean;
-  count: number;
-}
