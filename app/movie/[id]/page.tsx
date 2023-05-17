@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { MouseEvent, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/utils/api/customAxios';
 import { Movie } from '@/types/movie';
@@ -62,7 +62,7 @@ export default function MovieDetail({
     if (review.rating < 0 || review.rating > 100) return false;
     return true;
   }
-  const handleClick = async (e) => {
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const reviewBody = { title, content, rating };
     if (validateReview(reviewBody)) {
@@ -114,9 +114,13 @@ export default function MovieDetail({
             <p>Title : {movieDetail.title}</p>
             <p>
               Genres :
-              {movieDetail.genres.map((item) => {
+              {movieDetail.genres.map((item: string) => {
                 const url = `/movie?genre=${item}`;
-                return <Link href={url}>{item},</Link>;
+                return (
+                  <Link key={item} href={url}>
+                    {item},
+                  </Link>
+                );
               })}
             </p>
             <p>Grade Average : {movieDetail.voteAverage}</p>
