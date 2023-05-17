@@ -19,9 +19,11 @@ interface Props {
   backdropUrl: string;
   lastViewedAt: Date;
   overview: string;
+  page: number;
 }
 
 const Section = ({
+  page,
   movieId,
   title,
   backdropUrl,
@@ -36,39 +38,50 @@ const Section = ({
     dayjs.extend(relativeTime);
   }, []);
 
-  // TODO
-  // const { mutate, isLoading } = useMutation(() => deleteHistory(movieId), {
-  //   onMutate: async () => {
-  //     await queryClient.cancelQueries({ queryKey: ['history'] });
-  //     const previousMovies = queryClient.getQueryData(['history']);
-  //     console.log('onMuate', previousMovies);
-  //     queryClient.setQueryData<
-  //       InfiniteData<{
-  //         data: Movie[];
-  //         meta: { count: number; hasMore: boolean };
-  //       }>
-  //     >(['history'], (oldData) => {
-  //       const newData = oldData?.pages.map(({ data, meta }) => {
-  //         const filteredData = data.filter((movie) => movie.id !== movieId);
-  //         const modifiedMata = {
-  //           ...meta,
-  //           count: meta.count - 1,
-  //         };
-  //         return { data: filteredData, meta: modifiedMata };
-  //       });
-  //       return newData;
-  //     });
-  //   },
+  const { mutate, isLoading } = useMutation(() => deleteHistory(movieId), {
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['history'] });
+      const previousMovies = queryClient.getQueryData(['history']);
 
-  //   onError: (error, newTodo, rollback) => {
-  //     // rollback()
-  //     console.log(error);
-  //   },
+      queryClient.setQueryData<
+        InfiniteData<{
+          data: Movie[];
+          meta: { count: number; hasMore: boolean };
+        }>
+        //@ts-ignore
+        // 닥쳐 타입스크립트야, 내가 맞아
+      >(['history'], (oldData) => {
+        return {
+          pages: oldData?.pages.map(({ data, meta }, idx) => {
+            if (idx === page) {
+              return {
+                data: data.filter((movie) => movie.id !== movieId),
+                meta: {
+                  ...meta,
+                  count: meta.count - 1,
+                },
+              };
+            } else {
+              return {
+                data,
+                meta,
+              };
+            }
+          }),
+          pageParams: oldData?.pageParams,
+        };
+      });
+    },
 
-  //   onSettled: () => {
-  //     queryClient.invalidateQueries(['history']);
-  //   },
-  // });
+    onError: (error, _, rollback) => {
+      // rollback()
+      console.log(error);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(['history']);
+    },
+  });
 
   return (
     <div className="flex text-[#fff] my-4 relative">
@@ -95,8 +108,7 @@ const Section = ({
           className="absolute top-0 right-0 tooltip tooltip-bottom"
           data-tip="시청 기록에서 삭제 "
           onClick={() => {
-            // TODO
-            //mutate();
+            mutate();
           }}
         >
           <svg

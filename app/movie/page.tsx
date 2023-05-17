@@ -14,10 +14,12 @@ const page = async ({
     movieList = await getLocalmovieList({
       genre: searchParams['genre'] as Genre,
       cache: 'cache-force',
+      count: 12,
     });
   } else {
     movieList = await getLocalmovieList({
       cache: 'cache-force',
+      count: 12,
     });
   }
   const { data, meta } = movieList;
@@ -30,7 +32,7 @@ const page = async ({
             : 'ALL'}
         </h1>
       </div>
-      <div className="grid grid-flow-row gap-4 place-items-center grid-cols-auto">
+      <div className="relative grid grid-flow-row gap-4 place-items-center grid-cols-auto">
         {data.map(({ id, title, posterUrl, genres }) => (
           <Card
             key={id}
@@ -40,7 +42,10 @@ const page = async ({
             genres={genres}
           />
         ))}
-        <AdditionalCard lastId={data[data.length - 1].id || 0} />
+        <AdditionalCard
+          isMounted={false}
+          lastId={data[data.length - 1].id || 0}
+        />
       </div>
     </div>
   );
