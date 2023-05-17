@@ -7,9 +7,6 @@ import { getLocalmovieList } from '@/utils/api/home/getMovieList';
 import { useSearchParams } from 'next/navigation';
 import { Genre, Movie } from '@/types/movie';
 import Card from './Card';
-import { useRecoilValue } from 'recoil';
-import { isBottom } from '@/atom';
-import Spinner from '../common/spinner';
 
 interface Props {
   lastId: number;
@@ -56,7 +53,6 @@ const AdditionalCard = ({ lastId, isMounted }: Props) => {
 
   useEffect(() => {
     fetchNextPage();
-    // setFetchable(true);
   }, [inView]);
 
   if (!isMore)

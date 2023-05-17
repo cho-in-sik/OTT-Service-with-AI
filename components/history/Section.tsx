@@ -42,7 +42,6 @@ const Section = ({
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['history'] });
       const previousMovies = queryClient.getQueryData(['history']);
-      console.log('onMuate', previousMovies);
 
       queryClient.setQueryData<
         InfiniteData<{

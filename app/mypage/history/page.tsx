@@ -50,9 +50,7 @@ const Page = () => {
           ),
         );
       })}
-      <div className="text-xl text-white" ref={ref}>
-        이게 보이면 추가 load 할거임
-      </div>
+      <div ref={ref} />
     </div>
   );
 };
