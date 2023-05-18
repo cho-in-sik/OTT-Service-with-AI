@@ -35,11 +35,11 @@ api.interceptors.response.use(
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           return err;
         });
 
-    console.log(error);
+    // console.log(error);
     // alert(error.response?.data.message);
 
     throw error;

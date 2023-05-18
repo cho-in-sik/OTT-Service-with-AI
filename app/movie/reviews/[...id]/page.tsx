@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getMovieReviews } from '@/utils/api/movie/getMovieReviews';
-import { useQuery, useInfiniteQuery, QueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useInfiniteQuery,
+  QueryClient,
+  useMutation,
+} from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import profileBasicImg from '@/public/basicImg.jpeg';
 import Image from 'next/image';
@@ -13,6 +18,7 @@ import { getTimeDiff } from '@/utils/review/getTimeDiff';
 import newInitReviewsPaginationResult, {
   PaginationResult,
 } from '@/types/paginationResult';
+import { AxiosError } from 'axios';
 
 export default function MovieReviews() {
   const pathname = usePathname();
@@ -44,7 +50,8 @@ export default function MovieReviews() {
       // initialData: () => newInitReviewsPaginationResult(),
       // initialDataUpdatedAt: () => 0,
       suspense: true,
-      staleTime: 600000,
+      staleTime: 60000,
+
       getNextPageParam: ({ data, meta }) => {
         if (meta.hasMore) {
           return meta.lastId;
@@ -65,7 +72,6 @@ export default function MovieReviews() {
   }, [inView]);
 
   const [sortedReviews, setSortedReviews] = useState<IMovieReview[]>([]);
-
   // const { data: paginationResult, isFetched } = useQuery(
   //   ['movieReviews'],
   //   () => getMovieReviews(url),
@@ -79,10 +85,14 @@ export default function MovieReviews() {
 
   useEffect(() => {
     if (paginationResult && paginationResult.pages.length > 0) {
-      setSortedReviews([
-        ...sortedReviews,
-        ...paginationResult.pages[paginationResult.pages.length - 1].data,
-      ]);
+      setSortedReviews(
+        Array.from(
+          new Set([
+            ...sortedReviews,
+            ...paginationResult.pages[paginationResult.pages.length - 1].data,
+          ]),
+        ),
+      );
     }
   }, [isFetched, dataUpdatedAt]);
 
@@ -121,10 +131,19 @@ export default function MovieReviews() {
 
   //리뷰삭제
   const handleReviewDelete = async (reviewId: number) => {
-    const res = await api.delete(`/api/movies/reviews/${reviewId}`);
-    console.log(res);
-
-    alert('리뷰 삭제 성공');
+    try {
+      const res = await api.delete(`/api/movies/reviews/${reviewId}`);
+      console.log(res);
+      setSortedReviews((prevReviews) =>
+        prevReviews.filter(({ id }) => id !== reviewId),
+      );
+      alert('리뷰 삭제 성공');
+    } catch (error) {
+      const e = error as AxiosError;
+      if (e.response?.status === 403) {
+        alert((e.response.data as { message: string }).message);
+      }
+    }
   };
 
   return (
@@ -173,7 +192,7 @@ export default function MovieReviews() {
                 </div>
                 <div className="stat-title">Average Rating</div>
                 <div className="stat-value">
-                  {(averRating / sortedReviews.length).toFixed(2)}
+                  {(averRating / sortedReviews.length / 10).toFixed(2)}
                 </div>
               </div>
             </div>
@@ -203,7 +222,7 @@ export default function MovieReviews() {
               </thead>
               <tbody>
                 {sortedReviews.map((item: IMovieReview, i: number) => (
-                  <tr key={item.movieId}>
+                  <tr key={item.id}>
                     <th>{i + 1}</th>
                     <td className="flex items-center space-x-3">
                       <div className="mask mask-squircle w-12 h-12 ">
@@ -244,7 +263,7 @@ export default function MovieReviews() {
                       </label>
                     </td>
 
-                    <td>{item.rating}</td>
+                    <td>{Math.floor(item.rating / 10)}</td>
                     <td className="text-slate-500">
                       {getTimeDiff(item.createdAt)}
                     </td>

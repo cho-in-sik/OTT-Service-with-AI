@@ -122,11 +122,6 @@ export default function MyMovie() {
                           src={`http://localhost:8080${data.data[0].author.avatarUrl}`}
                         />
                       ) : (
-                        // <Image
-                        //   className="h-[600px]"
-                        //   src={`http://localhost:8080${data[0].author.avatarUrl}`}
-                        //   alt="기본이미지"
-                        // />
                         <Image
                           className="h-[600px]"
                           src={profileBasicImg}
