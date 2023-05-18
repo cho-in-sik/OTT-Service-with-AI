@@ -1,33 +1,36 @@
+'use client';
+
 import Link from 'next/link';
 import { LoginBtn, LogoutBtn } from './auth/SignBtn';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 import { getUser } from '@/utils/api/mypage/getUser';
 import { useQuery } from '@tanstack/react-query';
+import profileBasicImg from '@/public/basicImg.jpeg';
+import Image from 'next/image';
 
-// async function _getUser() {
-//   // if (sessionStorage.getItem('isLoggedIn') !== 'true'){
-//   //   return null;
-//   // }
-//   try {
-//     const user = await getUser();
-//     return user;
-//   } catch (err) {
-//     const e = err as Error;
-//     console.log('erororororororororororor');
-//     console.log(e);
-//     return null;
-//   }
-// }
+async function _getUser() {
+  // if (sessionStorage.getItem('isLoggedIn') !== 'true'){
+  //   return null;
+  // }
+  try {
+    const user = await getUser();
+    return user;
+  } catch (err) {
+    const e = err as Error;
+
+    return null;
+  }
+}
 
 export default function Header() {
-  const cookie = cookies().get('ACCESS_TOKEN');
+  // const cookie = cookies().get('ACCESS_TOKEN');
 
-  // const user = null;
-  // const { data: user } = useQuery(['myInfo'], _getUser, {
-  //   suspense: true,
-  //   retry: 0,
-  //   // useErrorBoundary: true,
-  // });
+  const { data: user } = useQuery(['myInfo'], _getUser, {
+    suspense: true,
+    retry: 0,
+    // useErrorBoundary: true,
+  });
+  console.log(user);
 
   return (
     <>
@@ -96,6 +99,45 @@ export default function Header() {
           </Link>
         </div>
         <div className="navbar-end">
+          {/* {!user === null && user.avatarUrl ? (
+            <div className="avatar">
+              <div className="w-12 rounded-full">
+                <img src={`http://localhost:8080${user.avatarUrl}`} />
+              </div>
+              <span className="ml-2 mr-2 font-medium text-lg">{user.name}</span>
+            </div>
+          ) : (
+            <div className="avatar">
+              <div className="w-12 rounded-full">
+                <Image src={profileBasicImg} alt="기본이미지" />
+              </div>
+              <span className="ml-2 mr-2 font-medium text-lg">{user.name}</span>
+            </div>
+          )} */}
+          {user === null ? (
+            <div></div>
+          ) : user.avatarUrl ? (
+            <div className="avatar">
+              <div className="w-12 rounded-full">
+                <Image
+                  src={`http://localhost:8080${user.avatarUrl}`}
+                  alt="profileImage"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="avatar">
+              <div className="w-12 rounded-full">
+                <Image src={profileBasicImg} alt="기본이미지" />
+              </div>
+            </div>
+          )}
+          {user === null ? (
+            <div></div>
+          ) : (
+            <span className="ml-2 mr-2 font-medium text-lg">{user.name}</span>
+          )}
+
           <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +175,7 @@ export default function Header() {
               tabIndex={1}
               className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
             >
-              {!!cookie && (
+              {!!user && (
                 <>
                   <li>
                     <Link href="mypage/myinfo">회원 정보 수정</Link>
@@ -152,7 +194,7 @@ export default function Header() {
                   </li>
                 </>
               )}
-              {!cookie && (
+              {!user && (
                 <>
                   <li>
                     <Link href="/auth/sign-up">회원가입</Link>
