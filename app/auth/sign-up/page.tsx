@@ -28,7 +28,7 @@ function SignUp() {
 
   const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
     const result = await api
-      .post('http://localhost:8080/api/auth/signup', data, {
+      .post('/api/auth/signup', data, {
         withCredentials: true,
       })
       .then((response) => response.data);
