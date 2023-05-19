@@ -99,28 +99,13 @@ export default function Header() {
           </Link>
         </div>
         <div className="navbar-end">
-          {/* {!user === null && user.avatarUrl ? (
-            <div className="avatar">
-              <div className="w-12 rounded-full">
-                <img src={`http://localhost:8080${user.avatarUrl}`} />
-              </div>
-              <span className="ml-2 mr-2 font-medium text-lg">{user.name}</span>
-            </div>
-          ) : (
-            <div className="avatar">
-              <div className="w-12 rounded-full">
-                <Image src={profileBasicImg} alt="기본이미지" />
-              </div>
-              <span className="ml-2 mr-2 font-medium text-lg">{user.name}</span>
-            </div>
-          )} */}
           {user === null ? (
             <div></div>
           ) : user.avatarUrl ? (
             <div className="avatar">
               <div className="w-12 rounded-full">
                 <img
-                  src={`http://localhost:8080${user.avatarUrl}`}
+                  src={`http://kdt-ai6-team05.elicecoding.com${user.avatarUrl}`}
                   alt="profileImage"
                   width={20}
                   height={20}
