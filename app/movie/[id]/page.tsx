@@ -191,7 +191,7 @@ export default function MovieDetail({
                   <div>{review.author.name}</div>
                 </td>
                 <td>{review.title}</td>
-                <td>{Math.floor(review.rating / 10)}</td>
+                <td>{Math.floor(review.rating)}</td>
               </tr>
             ))}
           </tbody>

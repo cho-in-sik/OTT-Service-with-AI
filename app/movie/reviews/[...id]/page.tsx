@@ -190,7 +190,7 @@ export default function MovieReviews() {
                 </div>
                 <div className="stat-title">Average Rating</div>
                 <div className="stat-value">
-                  {(averRating / sortedReviews.length / 10).toFixed(2)}
+                  {(averRating / sortedReviews.length).toFixed(2)}
                 </div>
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function MovieReviews() {
                       </label>
                     </td>
 
-                    <td>{Math.floor(item.rating / 10)}</td>
+                    <td>{Math.floor(item.rating)}</td>
                     <td className="text-slate-500">
                       {getTimeDiff(item.createdAt)}
                     </td>
