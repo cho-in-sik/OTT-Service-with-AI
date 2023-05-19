@@ -3,18 +3,24 @@
 import Image from 'next/image';
 
 import { useQuery } from '@tanstack/react-query';
+
 import { getMyReview } from '@/utils/api/mypage/getMyReview';
 import { api } from '@/utils/api/customAxios';
 import profileBasicImg from '@/public/basicImg.jpeg';
 import noReviewHeroImg from '@/public/hero.jpeg';
 import { useRouter } from 'next/navigation';
 import { IMovieReview } from '@/types/review';
+import { useState } from 'react';
 
 export default function MyMovie() {
-  const { data } = useQuery(['myreviews'], getMyReview, {
+  const { data, refetch } = useQuery(['myreviews'], getMyReview, {
     suspense: true,
-    staleTime: 60000,
+    staleTime: 6000,
   });
+
+  const [sortedReviews, setSortedReviews] = useState<IMovieReview[]>([
+    data.data,
+  ]);
 
   const router = useRouter();
 
@@ -30,6 +36,11 @@ export default function MyMovie() {
   const handleReviewDelete = async (reviewId: number) => {
     await api.delete(`/api/movies/reviews/${reviewId}`);
 
+    setSortedReviews((prevReviews) =>
+      prevReviews.filter(({ id }) => id !== reviewId),
+    );
+    console.log(sortedReviews);
+    refetch();
     alert('리뷰 삭제 성공');
   };
 

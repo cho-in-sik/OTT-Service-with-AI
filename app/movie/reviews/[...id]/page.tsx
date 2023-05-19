@@ -15,9 +15,7 @@ import Image from 'next/image';
 import { IMovieReview } from '@/types/review';
 import { api } from '@/utils/api/customAxios';
 import { getTimeDiff } from '@/utils/review/getTimeDiff';
-import newInitReviewsPaginationResult, {
-  PaginationResult,
-} from '@/types/paginationResult';
+
 import { AxiosError } from 'axios';
 
 export default function MovieReviews() {

@@ -119,16 +119,23 @@ export default function Header() {
           ) : user.avatarUrl ? (
             <div className="avatar">
               <div className="w-12 rounded-full">
-                <Image
+                <img
                   src={`http://localhost:8080${user.avatarUrl}`}
                   alt="profileImage"
+                  width={20}
+                  height={20}
                 />
               </div>
             </div>
           ) : (
             <div className="avatar">
               <div className="w-12 rounded-full">
-                <Image src={profileBasicImg} alt="기본이미지" />
+                <Image
+                  src={profileBasicImg}
+                  alt="기본이미지"
+                  width={20}
+                  height={20}
+                />
               </div>
             </div>
           )}

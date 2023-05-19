@@ -31,6 +31,7 @@ export default function PostImage() {
         'Content-Type': 'multipart/form-data',
       },
     });
+    alert('저장완료!');
   };
   return (
     <div className="mb-4">
