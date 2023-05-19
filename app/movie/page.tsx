@@ -33,13 +33,14 @@ const page = async ({
         </h1>
       </div>
       <div className="relative grid grid-flow-row gap-4 place-items-center grid-cols-auto">
-        {data.map(({ id, title, posterUrl, genres }) => (
+        {data.map(({ id, title, posterUrl, genres, isPositive }) => (
           <Card
             key={id}
             id={id}
             title={title}
             posterUrl={posterUrl}
             genres={genres}
+            isPositive={isPositive}
           />
         ))}
         <AdditionalCard

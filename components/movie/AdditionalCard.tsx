@@ -73,13 +73,14 @@ const AdditionalCard = ({ lastId, isMounted }: Props) => {
   return (
     <>
       {data?.pages.map(({ data }) => {
-        return data.map(({ id, title, genres, posterUrl }: any) => (
+        return data.map(({ id, title, genres, posterUrl, isPositive }: any) => (
           <Card
             key={id}
             id={id}
             title={title}
             genres={genres}
             posterUrl={posterUrl}
+            isPositive={isPositive}
           />
         ));
       })}

@@ -8,9 +8,10 @@ interface Props {
   title: string;
   posterUrl: string;
   genres: string[];
+  isPositive?: boolean;
 }
 
-const Card = ({ id, title, posterUrl, genres }: Props) => {
+const Card = ({ id, title, posterUrl, genres, isPositive }: Props) => {
   const [src, setSrc] = useState<string>(posterUrl);
   const router = useRouter();
   return (
@@ -31,7 +32,13 @@ const Card = ({ id, title, posterUrl, genres }: Props) => {
         />
       </figure>
       <div className="card-body h-36">
-        <h2 className="max-h-16 card-title w-60">{title}</h2>
+        <h2 className="max-h-16 card-title w-60">{title}123</h2>
+        {isPositive ? (
+          <div className="badge badge-secondary">긍정적 평가</div>
+        ) : (
+          <div className="badge badge-secondary">부정적 평가</div>
+        )}
+
         <div className="justify-end card-actions">
           {genres.map((genre, idx) => (
             <div

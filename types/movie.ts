@@ -12,6 +12,7 @@ export interface Movie {
   genres: string[];
   isLiked: boolean;
   isFavorite: boolean;
+  isPositive: boolean;
 }
 
 export type Genre =
