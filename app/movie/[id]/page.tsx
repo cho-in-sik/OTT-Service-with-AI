@@ -185,7 +185,7 @@ export default function MovieDetail({
                       <Image src={profileBasicImg} alt="profilebasicimage" />
                     )}
                     <img
-                      src={`http://localhost:8080${review.author.avatarUrl}`}
+                      src={`http://kdt-ai6-team05.elicecoding.com${review.author.avatarUrl}`}
                     />
                   </div>
                   <div>{review.author.name}</div>

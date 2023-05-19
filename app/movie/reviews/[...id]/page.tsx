@@ -231,7 +231,7 @@ export default function MovieReviews() {
                           />
                         )}
                         <img
-                          src={`http://localhost:8080${item.author.avatarUrl}`}
+                          src={`http://kdt-ai6-team05.elicecoding.com${item.author.avatarUrl}`}
                         />
                       </div>
                       <div>

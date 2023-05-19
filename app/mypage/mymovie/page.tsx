@@ -130,7 +130,7 @@ export default function MyMovie() {
                     <div className="w-16 rounded-full">
                       {data.data[0].author.avatarUrl ? (
                         <img
-                          src={`http://localhost:8080${data.data[0].author.avatarUrl}`}
+                          src={`http://kdt-ai6-team05.elicecoding.com${data.data[0].author.avatarUrl}`}
                         />
                       ) : (
                         <Image
