@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'image.tmdb.org',
       },
+      {
+        protocol: 'http',
+        hostname: 'kdt-ai6-team05.elicecoding.com',
+      },
     ],
   },
 };
