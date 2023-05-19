@@ -37,11 +37,18 @@ const Page = () => {
     <div className="min-h-[100vh] pt-24 w-[70%] mx-auto">
       {data?.pages.map(({ data }, idx) => {
         return data.map(
-          ({ id, title, backdropUrl, lastViewedAt, overview }: any) => (
+          ({
+            id,
+            title,
+            movieId,
+            backdropUrl,
+            lastViewedAt,
+            overview,
+          }: any) => (
             <Section
               page={idx}
               key={id}
-              movieId={id}
+              movieId={movieId}
               title={title}
               backdropUrl={backdropUrl}
               lastViewedAt={lastViewedAt}
